@@ -1,10 +1,30 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config';
+import { GraphQLModule } from '@nestjs/graphql';
+import { MongooseModule } from '@nestjs/mongoose';
+import { join } from 'path';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ThrottlerModule.forRoot({
+      ttl: +process.env.THROTTLE_TTL || 1,
+      limit: +process.env.THROTTLE_LIMIT || 6,
+    }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    GraphQLModule.forRootAsync({
+      useFactory: () => ({
+        autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+        sortSchema: true,
+      }),
+    }),
+    MongooseModule.forRootAsync({
+      useFactory: () => ({
+        uri: process.env.DATABASE_URL,
+      }),
+    }),
+  ],
 })
 export class AppModule {}
