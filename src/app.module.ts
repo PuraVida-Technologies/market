@@ -5,6 +5,8 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { MongooseModule } from '@nestjs/mongoose';
 import { join } from 'path';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { AdminModule } from './admin/admin.module';
+import { MarketplaceModule } from './marketplace/marketplace.module';
 
 @Module({
   imports: [
@@ -27,6 +29,10 @@ import { ThrottlerModule } from '@nestjs/throttler';
         uri: process.env.DATABASE_URL,
       }),
     }),
+
+    AdminModule,
+
+    MarketplaceModule,
   ],
 })
 export class AppModule {}
