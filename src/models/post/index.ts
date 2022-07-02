@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { POST_STATUS } from '../../common/constants/post.constants';
+import { postConstants } from '../../common/constants';
 import { Category } from '../category';
 
 @Schema({ _id: false, timestamps: false })
@@ -85,7 +85,7 @@ export class Post {
   price: number;
 
   @Field()
-  @Prop({ enum: POST_STATUS })
+  @Prop({ enum: postConstants.POST_STATUS })
   status: string;
 
   @Field()
