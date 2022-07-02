@@ -63,6 +63,12 @@
     "tsconfig-paths": "^3.10.1",
     "typescript": "^4.3.5"
   },
+  "contributors": [
+    {
+      "name": "Milad E. Fahmy <miladezzat>",
+      "email": "miladezzat.f@gmail.com"
+    }
+  ],
   "jest": {
     "moduleFileExtensions": [
       "js",

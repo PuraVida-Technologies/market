@@ -2,27 +2,87 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-input CreatePostInput {
+type AdminCategory {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type AdminPost {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input CreateAdminCategoryInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input CreateAdminPostInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input CreateMarketplaceCategoryInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input CreateMarketplacePostInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type MarketplaceCategory {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type MarketplacePost {
   """Example field (placeholder)"""
   exampleField: Int!
 }
 
 type Mutation {
-  createPost(createPostInput: CreatePostInput!): Post!
-  removePost(id: Int!): Post!
-  updatePost(updatePostInput: UpdatePostInput!): Post!
-}
-
-type Post {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  createAdminCategory(createAdminCategoryInput: CreateAdminCategoryInput!): AdminCategory!
+  createAdminPost(createAdminPostInput: CreateAdminPostInput!): AdminPost!
+  createMarketplaceCategory(createMarketplaceCategoryInput: CreateMarketplaceCategoryInput!): MarketplaceCategory!
+  createMarketplacePost(createMarketplacePostInput: CreateMarketplacePostInput!): MarketplacePost!
+  removeAdminCategory(id: Int!): AdminCategory!
+  removeAdminPost(id: Int!): AdminPost!
+  removeMarketplaceCategory(id: Int!): MarketplaceCategory!
+  removeMarketplacePost(id: Int!): MarketplacePost!
+  updateAdminCategory(updateAdminCategoryInput: UpdateAdminCategoryInput!): AdminCategory!
+  updateAdminPost(updateAdminPostInput: UpdateAdminPostInput!): AdminPost!
+  updateMarketplaceCategory(updateMarketplaceCategoryInput: UpdateMarketplaceCategoryInput!): MarketplaceCategory!
+  updateMarketplacePost(updateMarketplacePostInput: UpdateMarketplacePostInput!): MarketplacePost!
 }
 
 type Query {
-  post(id: Int!): Post!
+  adminCategory(id: Int!): AdminCategory!
+  adminPost(id: Int!): AdminPost!
+  marketplaceCategory(id: Int!): MarketplaceCategory!
+  marketplacePost(id: Int!): MarketplacePost!
 }
 
-input UpdatePostInput {
+input UpdateAdminCategoryInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input UpdateAdminPostInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input UpdateMarketplaceCategoryInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input UpdateMarketplacePostInput {
   """Example field (placeholder)"""
   exampleField: Int
   id: Int!
