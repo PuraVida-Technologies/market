@@ -6,10 +6,15 @@ import { UpdateMarketplacePostInput } from './dto/update-marketplace-post.input'
 
 @Resolver(() => MarketplacePost)
 export class MarketplacePostResolver {
-  constructor(private readonly marketplacePostService: MarketplacePostService) {}
+  constructor(
+    private readonly marketplacePostService: MarketplacePostService,
+  ) {}
 
   @Mutation(() => MarketplacePost)
-  createMarketplacePost(@Args('createMarketplacePostInput') createMarketplacePostInput: CreateMarketplacePostInput) {
+  createMarketplacePost(
+    @Args('createMarketplacePostInput')
+    createMarketplacePostInput: CreateMarketplacePostInput,
+  ) {
     return this.marketplacePostService.create(createMarketplacePostInput);
   }
 
@@ -24,8 +29,14 @@ export class MarketplacePostResolver {
   }
 
   @Mutation(() => MarketplacePost)
-  updateMarketplacePost(@Args('updateMarketplacePostInput') updateMarketplacePostInput: UpdateMarketplacePostInput) {
-    return this.marketplacePostService.update(updateMarketplacePostInput.id, updateMarketplacePostInput);
+  updateMarketplacePost(
+    @Args('updateMarketplacePostInput')
+    updateMarketplacePostInput: UpdateMarketplacePostInput,
+  ) {
+    return this.marketplacePostService.update(
+      updateMarketplacePostInput.id,
+      updateMarketplacePostInput,
+    );
   }
 
   @Mutation(() => MarketplacePost)
