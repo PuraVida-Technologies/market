@@ -35,8 +35,44 @@ input CreateMarketplaceCategoryInput {
 }
 
 input CreateMarketplacePostInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  """This is the address"""
+  address: String!
+
+  """This is the category id"""
+  categoryId: String!
+
+  """This is the description of the post"""
+  description: String!
+
+  """This is the Owner email"""
+  email: String
+
+  """This is the rest of images"""
+  imagesUrls: [String!]!
+
+  """This is the latitude"""
+  latitude: Float!
+
+  """This is the longitude"""
+  longitude: Float!
+
+  """This is the main image of the post"""
+  mainImageUrl: String!
+
+  """This is the name of the post"""
+  name: String!
+
+  """This is the open hours"""
+  openHours: Float!
+
+  """This is the Owner phone number"""
+  phoneNumber: String
+
+  """This is the price"""
+  price: Float!
+
+  """This is the Owner Id"""
+  userId: String!
 }
 
 """
@@ -95,7 +131,43 @@ input UpdateMarketplaceCategoryInput {
 }
 
 input UpdateMarketplacePostInput {
-  """Example field (placeholder)"""
-  exampleField: Int
+  """This is the address"""
+  address: String
+
+  """This is the category id"""
+  categoryId: String
+
+  """This is the description of the post"""
+  description: String
+
+  """This is the Owner email"""
+  email: String
   id: Int!
+
+  """This is the rest of images"""
+  imagesUrls: [String!]
+
+  """This is the latitude"""
+  latitude: Float
+
+  """This is the longitude"""
+  longitude: Float
+
+  """This is the main image of the post"""
+  mainImageUrl: String
+
+  """This is the name of the post"""
+  name: String
+
+  """This is the open hours"""
+  openHours: Float
+
+  """This is the Owner phone number"""
+  phoneNumber: String
+
+  """This is the price"""
+  price: Float
+
+  """This is the Owner Id"""
+  userId: String
 }
