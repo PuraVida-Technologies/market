@@ -10,7 +10,8 @@ export class Location {
   @Prop({ type: String, enum: ['Point'] })
   type: string;
 
-  @Prop([Number])
+  @Field(() => [Number])
+  @Prop([Number, Number])
   coordinates: [number, number];
 }
 
@@ -63,6 +64,7 @@ export class Post {
   @Prop()
   mainImageUrl: string;
 
+  @Field(() => [String])
   @Prop([String])
   imagesUrls: string[];
 
