@@ -89,7 +89,10 @@ export class Post {
   price: number;
 
   @Field()
-  @Prop({ enum: postConstants.POST_STATUS })
+  @Prop({
+    enum: postConstants.POST_STATUS,
+    default: postConstants.POST_STATUS.PENDING_STATUS,
+  })
   status: string;
 
   @Field()
