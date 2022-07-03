@@ -12,6 +12,13 @@ type AdminPost {
   exampleField: Int!
 }
 
+type Category {
+  _id: String!
+  createdAt: DateTime!
+  name: String!
+  updatedAt: DateTime!
+}
+
 input CreateAdminCategoryInput {
   """Example field (placeholder)"""
   exampleField: Int!
@@ -31,6 +38,11 @@ input CreateMarketplacePostInput {
   """Example field (placeholder)"""
   exampleField: Int!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type MarketplaceCategory {
   """Example field (placeholder)"""
