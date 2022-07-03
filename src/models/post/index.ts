@@ -11,8 +11,8 @@ export class Location {
   type: string;
 
   @Field()
-  @Prop({ type: [Number] })
-  coordinates: number[];
+  @Prop({ type: [Number, Number] })
+  coordinates: [number, number];
 }
 
 @Schema({ _id: false, timestamps: false })
@@ -79,6 +79,10 @@ export class Post {
   @Field()
   @Prop({ type: Owner })
   ownerInfo: Owner;
+
+  @Field()
+  @Prop()
+  userId: string;
 
   @Field()
   @Prop()

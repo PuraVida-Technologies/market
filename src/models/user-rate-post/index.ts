@@ -23,6 +23,10 @@ export class UserRatePost extends Document {
   @Prop()
   value: number;
 
+  @Field()
+  @Prop()
+  description: string;
+
   @Prop({ default: false })
   isDeleted: boolean;
 
