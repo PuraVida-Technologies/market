@@ -1,0 +1,1 @@
+export { generateCategory } from './post';

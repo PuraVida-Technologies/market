@@ -8,17 +8,17 @@ import helmet from 'helmet';
 
 import { rootMongooseTestModule } from '../mongo.connection';
 import { MarketplaceModule } from '../../src/marketplace/marketplace.module';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    GraphQLModule.forRootAsync({
-      useFactory: () => ({
-        autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-        sortSchema: true,
-      }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      sortSchema: true,
     }),
     rootMongooseTestModule(),
     MarketplaceModule,

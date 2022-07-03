@@ -2,31 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type AdminCategory {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-type AdminPost {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
 type Category {
   _id: String!
   createdAt: DateTime!
   name: String!
   updatedAt: DateTime!
-}
-
-input CreateAdminCategoryInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input CreateAdminPostInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
 }
 
 input CreateMarketplaceCategoryInput {
@@ -63,7 +43,7 @@ input CreateMarketplacePostInput {
   name: String!
 
   """This is the open hours"""
-  openHours: Float!
+  openHours: String!
 
   """This is the Owner phone number"""
   phoneNumber: String
@@ -86,42 +66,33 @@ type MarketplaceCategory {
 }
 
 type MarketplacePost {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  _id: String!
+  address: String!
+  categoryId: String!
+  createdAt: DateTime!
+  description: String!
+  imagesUrls: [String!]!
+  mainImageUrl: String!
+  name: String!
+  openHours: String!
+  price: Float!
+  status: String!
+  updatedAt: DateTime!
+  userId: String!
 }
 
 type Mutation {
-  createAdminCategory(createAdminCategoryInput: CreateAdminCategoryInput!): AdminCategory!
-  createAdminPost(createAdminPostInput: CreateAdminPostInput!): AdminPost!
   createMarketplaceCategory(createMarketplaceCategoryInput: CreateMarketplaceCategoryInput!): MarketplaceCategory!
   createMarketplacePost(createMarketplacePostInput: CreateMarketplacePostInput!): MarketplacePost!
-  removeAdminCategory(id: Int!): AdminCategory!
-  removeAdminPost(id: Int!): AdminPost!
   removeMarketplaceCategory(id: Int!): MarketplaceCategory!
   removeMarketplacePost(id: Int!): MarketplacePost!
-  updateAdminCategory(updateAdminCategoryInput: UpdateAdminCategoryInput!): AdminCategory!
-  updateAdminPost(updateAdminPostInput: UpdateAdminPostInput!): AdminPost!
   updateMarketplaceCategory(updateMarketplaceCategoryInput: UpdateMarketplaceCategoryInput!): MarketplaceCategory!
   updateMarketplacePost(updateMarketplacePostInput: UpdateMarketplacePostInput!): MarketplacePost!
 }
 
 type Query {
-  adminCategory(id: Int!): AdminCategory!
-  adminPost(id: Int!): AdminPost!
   marketplaceCategory(id: Int!): MarketplaceCategory!
   marketplacePost(id: Int!): MarketplacePost!
-}
-
-input UpdateAdminCategoryInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
-}
-
-input UpdateAdminPostInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
 }
 
 input UpdateMarketplaceCategoryInput {
@@ -160,7 +131,7 @@ input UpdateMarketplacePostInput {
   name: String
 
   """This is the open hours"""
-  openHours: Float
+  openHours: String
 
   """This is the Owner phone number"""
   phoneNumber: String

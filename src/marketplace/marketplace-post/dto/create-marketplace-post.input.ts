@@ -1,6 +1,7 @@
 import { InputType, Field } from '@nestjs/graphql';
 import {
   ArrayNotEmpty,
+  IsEmail,
   IsMongoId,
   IsNotEmpty,
   IsNumber,
@@ -10,7 +11,6 @@ import {
   IsString,
   IsUrl,
   Length,
-  ValidateNested,
 } from 'class-validator';
 
 @InputType()
@@ -40,9 +40,11 @@ export class CreateMarketplacePostInput {
 
   @Field(() => [String], { description: 'This is the rest of images' })
   @ArrayNotEmpty()
-  @ValidateNested({ each: true })
-  @IsString()
-  @IsUrl({ require_protocol: true, require_valid_protocol: true })
+  @IsString({ each: true })
+  @IsUrl(
+    { require_protocol: true, require_valid_protocol: true },
+    { each: true },
+  )
   imagesUrls: string[];
 
   @Field(() => String, { description: 'This is the address' })
@@ -76,7 +78,7 @@ export class CreateMarketplacePostInput {
   @IsOptional()
   @IsNotEmpty()
   @IsString()
-  @IsPhoneNumber()
+  @IsEmail()
   email: string;
 
   @Field(() => String, { description: 'This is the Owner Id' })
@@ -91,7 +93,7 @@ export class CreateMarketplacePostInput {
   @IsPositive()
   price: number;
 
-  @Field(() => Number, { description: 'This is the open hours' })
+  @Field(() => String, { description: 'This is the open hours' })
   @IsString()
   @IsNotEmpty()
   openHours: string;
