@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Category, Post } from '../../models';
+import { Category, Location, Owner, Post } from '../../models';
 import { CreateMarketplacePostInput } from './dto/create-marketplace-post.input';
 import { UpdateMarketplacePostInput } from './dto/update-marketplace-post.input';
 
@@ -15,7 +15,7 @@ export class MarketplacePostService {
     const { longitude, latitude, phoneNumber, email, categoryId } =
       createMarketplacePostInput;
 
-    const category = await this.categoryModel
+    const category: Category = await this.categoryModel
       .findOne({
         isDeleted: false,
         _id: categoryId,
@@ -26,18 +26,20 @@ export class MarketplacePostService {
       throw new NotFoundException('the category does not exists');
     }
 
+    const ownerInfo: Owner = {
+      phoneNumber,
+      email,
+    };
+
+    const location: Location = {
+      type: 'Point',
+      coordinates: [longitude, latitude],
+    };
+
     const post = {
       ...createMarketplacePostInput,
-      location: {
-        type: 'Point',
-        coordinates: [longitude, latitude],
-      },
-
-      ownerInfo: {
-        phoneNumber,
-        email,
-      },
-
+      location,
+      ownerInfo,
       category,
     };
 

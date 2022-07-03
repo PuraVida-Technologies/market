@@ -19,11 +19,11 @@ export class Location {
 export class Owner {
   @Field()
   @Prop()
-  phone: string;
+  phoneNumber: string;
 
   @Field()
   @Prop({ default: false })
-  isPhoneVerified: boolean;
+  isPhoneVerified?: boolean;
 
   @Field()
   @Prop()
@@ -31,7 +31,7 @@ export class Owner {
 
   @Field()
   @Prop({ default: false })
-  isEmailVerified: boolean;
+  isEmailVerified?: boolean;
 }
 
 @Schema({ timestamps: true })
