@@ -3,6 +3,6 @@ import { MarketplacePostModule } from './marketplace-post/marketplace-post.modul
 import { MarketplaceCategoryModule } from './marketplace-category/marketplace-category.module';
 
 @Module({
-  imports: [MarketplacePostModule, MarketplaceCategoryModule]
+  imports: [MarketplacePostModule, MarketplaceCategoryModule],
 })
 export class MarketplaceModule {}

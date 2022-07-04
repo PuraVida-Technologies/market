@@ -2,24 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type AdminCategory {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-type AdminPost {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input CreateAdminCategoryInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input CreateAdminPostInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+type Category {
+  _id: String!
+  createdAt: DateTime!
+  name: String!
+  updatedAt: DateTime!
 }
 
 input CreateMarketplaceCategoryInput {
@@ -28,9 +15,50 @@ input CreateMarketplaceCategoryInput {
 }
 
 input CreateMarketplacePostInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  """This is the address"""
+  address: String!
+
+  """This is the category id"""
+  categoryId: String!
+
+  """This is the description of the post"""
+  description: String!
+
+  """This is the Owner email"""
+  email: String
+
+  """This is the rest of images"""
+  imagesUrls: [String!]!
+
+  """This is the latitude"""
+  latitude: Float!
+
+  """This is the longitude"""
+  longitude: Float!
+
+  """This is the main image of the post"""
+  mainImageUrl: String!
+
+  """This is the name of the post"""
+  name: String!
+
+  """This is the open hours"""
+  openHours: String!
+
+  """This is the Owner phone number"""
+  phoneNumber: String
+
+  """This is the price"""
+  price: Float!
+
+  """This is the Owner Id"""
+  userId: String!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type MarketplaceCategory {
   """Example field (placeholder)"""
@@ -38,42 +66,33 @@ type MarketplaceCategory {
 }
 
 type MarketplacePost {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  _id: String!
+  address: String!
+  categoryId: String!
+  createdAt: DateTime!
+  description: String!
+  imagesUrls: [String!]!
+  mainImageUrl: String!
+  name: String!
+  openHours: String!
+  price: Float!
+  status: String!
+  updatedAt: DateTime!
+  userId: String!
 }
 
 type Mutation {
-  createAdminCategory(createAdminCategoryInput: CreateAdminCategoryInput!): AdminCategory!
-  createAdminPost(createAdminPostInput: CreateAdminPostInput!): AdminPost!
   createMarketplaceCategory(createMarketplaceCategoryInput: CreateMarketplaceCategoryInput!): MarketplaceCategory!
   createMarketplacePost(createMarketplacePostInput: CreateMarketplacePostInput!): MarketplacePost!
-  removeAdminCategory(id: Int!): AdminCategory!
-  removeAdminPost(id: Int!): AdminPost!
   removeMarketplaceCategory(id: Int!): MarketplaceCategory!
   removeMarketplacePost(id: Int!): MarketplacePost!
-  updateAdminCategory(updateAdminCategoryInput: UpdateAdminCategoryInput!): AdminCategory!
-  updateAdminPost(updateAdminPostInput: UpdateAdminPostInput!): AdminPost!
   updateMarketplaceCategory(updateMarketplaceCategoryInput: UpdateMarketplaceCategoryInput!): MarketplaceCategory!
   updateMarketplacePost(updateMarketplacePostInput: UpdateMarketplacePostInput!): MarketplacePost!
 }
 
 type Query {
-  adminCategory(id: Int!): AdminCategory!
-  adminPost(id: Int!): AdminPost!
   marketplaceCategory(id: Int!): MarketplaceCategory!
   marketplacePost(id: Int!): MarketplacePost!
-}
-
-input UpdateAdminCategoryInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
-}
-
-input UpdateAdminPostInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
 }
 
 input UpdateMarketplaceCategoryInput {
@@ -83,7 +102,43 @@ input UpdateMarketplaceCategoryInput {
 }
 
 input UpdateMarketplacePostInput {
-  """Example field (placeholder)"""
-  exampleField: Int
+  """This is the address"""
+  address: String
+
+  """This is the category id"""
+  categoryId: String
+
+  """This is the description of the post"""
+  description: String
+
+  """This is the Owner email"""
+  email: String
   id: Int!
+
+  """This is the rest of images"""
+  imagesUrls: [String!]
+
+  """This is the latitude"""
+  latitude: Float
+
+  """This is the longitude"""
+  longitude: Float
+
+  """This is the main image of the post"""
+  mainImageUrl: String
+
+  """This is the name of the post"""
+  name: String
+
+  """This is the open hours"""
+  openHours: String
+
+  """This is the Owner phone number"""
+  phoneNumber: String
+
+  """This is the price"""
+  price: Float
+
+  """This is the Owner Id"""
+  userId: String
 }

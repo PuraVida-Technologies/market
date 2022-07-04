@@ -4,7 +4,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 
 @Schema({ timestamps: true })
 @ObjectType()
-export class UserRatePost extends Document {
+export class UserRatePost {
   @Field()
   _id: string;
 

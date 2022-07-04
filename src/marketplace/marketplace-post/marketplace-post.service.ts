@@ -1,11 +1,49 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Category, Location, Owner, Post } from '../../models';
 import { CreateMarketplacePostInput } from './dto/create-marketplace-post.input';
 import { UpdateMarketplacePostInput } from './dto/update-marketplace-post.input';
 
 @Injectable()
 export class MarketplacePostService {
-  create(createMarketplacePostInput: CreateMarketplacePostInput) {
-    return 'This action adds a new marketplacePost';
+  constructor(
+    @InjectModel(Post.name) private readonly postModel: Model<Post>,
+    @InjectModel(Category.name) private readonly categoryModel: Model<Category>,
+  ) {}
+  async create(createMarketplacePostInput: CreateMarketplacePostInput) {
+    const { longitude, latitude, phoneNumber, email, categoryId } =
+      createMarketplacePostInput;
+
+    const category: Category = await this.categoryModel
+      .findOne({
+        isDeleted: false,
+        _id: categoryId,
+      })
+      .lean();
+
+    if (!category) {
+      throw new NotFoundException('the category does not exists');
+    }
+
+    const ownerInfo: Owner = {
+      phoneNumber,
+      email,
+    };
+
+    const location: Location = {
+      type: 'Point',
+      coordinates: [longitude, latitude],
+    };
+
+    const post = {
+      ...createMarketplacePostInput,
+      location,
+      ownerInfo,
+      category,
+    };
+
+    return this.postModel.create(post);
   }
 
   findAll() {

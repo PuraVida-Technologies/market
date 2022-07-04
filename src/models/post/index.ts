@@ -10,8 +10,8 @@ export class Location {
   @Prop({ type: String, enum: ['Point'] })
   type: string;
 
-  @Field()
-  @Prop({ type: [Number, Number] })
+  @Field(() => [Number])
+  @Prop([Number, Number])
   coordinates: [number, number];
 }
 
@@ -19,11 +19,11 @@ export class Location {
 export class Owner {
   @Field()
   @Prop()
-  phone: string;
+  phoneNumber: string;
 
   @Field()
   @Prop({ default: false })
-  isPhoneVerified: boolean;
+  isPhoneVerified?: boolean;
 
   @Field()
   @Prop()
@@ -31,7 +31,7 @@ export class Owner {
 
   @Field()
   @Prop({ default: false })
-  isEmailVerified: boolean;
+  isEmailVerified?: boolean;
 }
 
 @Schema({ timestamps: true })
@@ -64,8 +64,8 @@ export class Post {
   @Prop()
   mainImageUrl: string;
 
-  @Field()
-  @Prop({ type: [String] })
+  @Field(() => [String])
+  @Prop([String])
   imagesUrls: string[];
 
   @Field()
@@ -89,7 +89,10 @@ export class Post {
   price: number;
 
   @Field()
-  @Prop({ enum: postConstants.POST_STATUS })
+  @Prop({
+    enum: postConstants.POST_STATUS,
+    default: postConstants.POST_STATUS.PENDING,
+  })
   status: string;
 
   @Field()
