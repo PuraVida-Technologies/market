@@ -1,1 +1,1 @@
-export { generateCategory } from './post';
+export { generateCategory } from './category';
