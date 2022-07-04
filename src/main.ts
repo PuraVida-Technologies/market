@@ -8,9 +8,8 @@ import { json, urlencoded } from 'body-parser';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-
   //validation for api endpoints
-  app.useGlobalPipes(new ValidationPipe({whitelist: true, transform: true}));
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
   //cookie parser for use http only cookie for JWT authentication
   app.use(cookieParser());
