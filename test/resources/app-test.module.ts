@@ -8,6 +8,7 @@ import helmet from 'helmet';
 
 import { rootMongooseTestModule } from '../mongo.connection';
 import { MarketplaceModule } from '../../src/marketplace/marketplace.module';
+import { AdminModule } from '../../src/admin/admin.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 @Module({
@@ -22,6 +23,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
     }),
     rootMongooseTestModule(),
     MarketplaceModule,
+    AdminModule,
   ],
 })
 export class AppModule {}
