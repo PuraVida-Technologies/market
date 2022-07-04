@@ -91,7 +91,7 @@ export class Post {
   @Field()
   @Prop({
     enum: postConstants.POST_STATUS,
-    default: postConstants.POST_STATUS.PENDING_STATUS,
+    default: postConstants.POST_STATUS.PENDING,
   })
   status: string;
 
