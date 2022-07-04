@@ -1,1 +1,1 @@
-export * as postConstants from './post.constants';
+export * from './post.constants';
