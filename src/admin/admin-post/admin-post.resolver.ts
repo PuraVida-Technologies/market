@@ -3,14 +3,25 @@ import { AdminPostService } from './admin-post.service';
 import { AdminPost } from './entities/admin-post.entity';
 import { CreateAdminPostInput } from './dto/create-admin-post.input';
 import { UpdateAdminPostInput } from './dto/update-admin-post.input';
+import { ApproveOrDeclinePostInput } from './dto/approve-or-decline-post.input';
 
 @Resolver(() => AdminPost)
 export class AdminPostResolver {
   constructor(private readonly adminPostService: AdminPostService) {}
 
   @Mutation(() => AdminPost)
-  createAdminPost(@Args('createAdminPostInput') createAdminPostInput: CreateAdminPostInput) {
+  createAdminPost(
+    @Args('createAdminPostInput') createAdminPostInput: CreateAdminPostInput,
+  ) {
     return this.adminPostService.create(createAdminPostInput);
+  }
+
+  @Mutation(() => AdminPost)
+  approveOrDeclinePost(
+    @Args('approveOrDeclinePostInput')
+    approveOrDeclinePostInput: ApproveOrDeclinePostInput,
+  ) {
+    return this.adminPostService.approveOrDecline(approveOrDeclinePostInput);
   }
 
   @Query(() => [AdminPost], { name: 'adminPost' })
@@ -24,8 +35,13 @@ export class AdminPostResolver {
   }
 
   @Mutation(() => AdminPost)
-  updateAdminPost(@Args('updateAdminPostInput') updateAdminPostInput: UpdateAdminPostInput) {
-    return this.adminPostService.update(updateAdminPostInput.id, updateAdminPostInput);
+  updateAdminPost(
+    @Args('updateAdminPostInput') updateAdminPostInput: UpdateAdminPostInput,
+  ) {
+    return this.adminPostService.update(
+      updateAdminPostInput.id,
+      updateAdminPostInput,
+    );
   }
 
   @Mutation(() => AdminPost)
