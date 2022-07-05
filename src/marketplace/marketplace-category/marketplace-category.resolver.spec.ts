@@ -10,7 +10,9 @@ describe('MarketplaceCategoryResolver', () => {
       providers: [MarketplaceCategoryResolver, MarketplaceCategoryService],
     }).compile();
 
-    resolver = module.get<MarketplaceCategoryResolver>(MarketplaceCategoryResolver);
+    resolver = module.get<MarketplaceCategoryResolver>(
+      MarketplaceCategoryResolver,
+    );
   });
 
   it('should be defined', () => {

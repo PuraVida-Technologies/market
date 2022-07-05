@@ -19,7 +19,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "test:e2e:watch": "jest --config ./test/jest-e2e.json --watchAll"
+    "test:e2e:watch": "jest --config ./test/jest-e2e.json --watchAll",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@nestjs/apollo": "^10.0.16",
@@ -37,9 +38,11 @@
     "class-validator": "^0.13.2",
     "cookie-parser": "^1.4.6",
     "faker": "^5.5.3",
+    "graphql": "^16.5.0",
     "helmet": "^5.1.0",
     "lodash": "^4.17.21",
     "mongodb-memory-server": "^8.7.2",
+    "mongoose": "^6.4.2",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0"
@@ -60,6 +63,7 @@
     "eslint": "^8.0.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^8.0.1",
     "jest": "^27.2.5",
     "prettier": "^2.3.2",
     "source-map-support": "^0.5.20",

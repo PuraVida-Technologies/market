@@ -6,11 +6,18 @@ import { UpdateMarketplaceCategoryInput } from './dto/update-marketplace-categor
 
 @Resolver(() => MarketplaceCategory)
 export class MarketplaceCategoryResolver {
-  constructor(private readonly marketplaceCategoryService: MarketplaceCategoryService) {}
+  constructor(
+    private readonly marketplaceCategoryService: MarketplaceCategoryService,
+  ) {}
 
   @Mutation(() => MarketplaceCategory)
-  createMarketplaceCategory(@Args('createMarketplaceCategoryInput') createMarketplaceCategoryInput: CreateMarketplaceCategoryInput) {
-    return this.marketplaceCategoryService.create(createMarketplaceCategoryInput);
+  createMarketplaceCategory(
+    @Args('createMarketplaceCategoryInput')
+    createMarketplaceCategoryInput: CreateMarketplaceCategoryInput,
+  ) {
+    return this.marketplaceCategoryService.create(
+      createMarketplaceCategoryInput,
+    );
   }
 
   @Query(() => [MarketplaceCategory], { name: 'marketplaceCategory' })
@@ -24,8 +31,14 @@ export class MarketplaceCategoryResolver {
   }
 
   @Mutation(() => MarketplaceCategory)
-  updateMarketplaceCategory(@Args('updateMarketplaceCategoryInput') updateMarketplaceCategoryInput: UpdateMarketplaceCategoryInput) {
-    return this.marketplaceCategoryService.update(updateMarketplaceCategoryInput.id, updateMarketplaceCategoryInput);
+  updateMarketplaceCategory(
+    @Args('updateMarketplaceCategoryInput')
+    updateMarketplaceCategoryInput: UpdateMarketplaceCategoryInput,
+  ) {
+    return this.marketplaceCategoryService.update(
+      updateMarketplaceCategoryInput.id,
+      updateMarketplaceCategoryInput,
+    );
   }
 
   @Mutation(() => MarketplaceCategory)
