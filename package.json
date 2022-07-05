@@ -19,7 +19,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "test:e2e:watch": "jest --config ./test/jest-e2e.json --watchAll"
+    "test:e2e:watch": "jest --config ./test/jest-e2e.json --watchAll",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@nestjs/apollo": "^10.0.16",
@@ -38,6 +39,7 @@
     "cookie-parser": "^1.4.6",
     "faker": "^5.5.3",
     "helmet": "^5.1.0",
+    "husky": "^8.0.1",
     "lodash": "^4.17.21",
     "mongodb-memory-server": "^8.7.2",
     "reflect-metadata": "^0.1.13",
