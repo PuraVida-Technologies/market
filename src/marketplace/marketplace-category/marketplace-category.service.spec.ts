@@ -9,7 +9,9 @@ describe('MarketplaceCategoryService', () => {
       providers: [MarketplaceCategoryService],
     }).compile();
 
-    service = module.get<MarketplaceCategoryService>(MarketplaceCategoryService);
+    service = module.get<MarketplaceCategoryService>(
+      MarketplaceCategoryService,
+    );
   });
 
   it('should be defined', () => {

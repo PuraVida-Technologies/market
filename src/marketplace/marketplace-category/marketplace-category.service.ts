@@ -16,7 +16,10 @@ export class MarketplaceCategoryService {
     return `This action returns a #${id} marketplaceCategory`;
   }
 
-  update(id: number, updateMarketplaceCategoryInput: UpdateMarketplaceCategoryInput) {
+  update(
+    id: number,
+    updateMarketplaceCategoryInput: UpdateMarketplaceCategoryInput,
+  ) {
     return `This action updates a #${id} marketplaceCategory`;
   }
 

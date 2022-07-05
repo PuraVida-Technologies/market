@@ -9,7 +9,10 @@ export class AdminCategoryResolver {
   constructor(private readonly adminCategoryService: AdminCategoryService) {}
 
   @Mutation(() => AdminCategory)
-  createAdminCategory(@Args('createAdminCategoryInput') createAdminCategoryInput: CreateAdminCategoryInput) {
+  createAdminCategory(
+    @Args('createAdminCategoryInput')
+    createAdminCategoryInput: CreateAdminCategoryInput,
+  ) {
     return this.adminCategoryService.create(createAdminCategoryInput);
   }
 
@@ -24,8 +27,14 @@ export class AdminCategoryResolver {
   }
 
   @Mutation(() => AdminCategory)
-  updateAdminCategory(@Args('updateAdminCategoryInput') updateAdminCategoryInput: UpdateAdminCategoryInput) {
-    return this.adminCategoryService.update(updateAdminCategoryInput.id, updateAdminCategoryInput);
+  updateAdminCategory(
+    @Args('updateAdminCategoryInput')
+    updateAdminCategoryInput: UpdateAdminCategoryInput,
+  ) {
+    return this.adminCategoryService.update(
+      updateAdminCategoryInput.id,
+      updateAdminCategoryInput,
+    );
   }
 
   @Mutation(() => AdminCategory)
