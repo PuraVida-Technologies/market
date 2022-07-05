@@ -19,7 +19,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "test:e2e:watch": "jest --config ./test/jest-e2e.json --watchAll"
+    "test:e2e:watch": "jest --config ./test/jest-e2e.json --watchAll",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@nestjs/apollo": "^10.0.16",
@@ -78,11 +79,6 @@
       "email": "miladezzat.f@gmail.com"
     }
   ],
-  "husky":{
-    "hooks": {
-      "pre-push": "npm run test:e2e"
-    }
-  },
   "jest": {
     "moduleFileExtensions": [
       "js",
