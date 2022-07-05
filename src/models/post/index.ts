@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { postConstants } from '../../common/constants';
+import { POST_STATUS } from '../../common/constants';
 import { Category } from '../category';
 
 @Schema({ _id: false, timestamps: false })
@@ -90,8 +90,8 @@ export class Post {
 
   @Field()
   @Prop({
-    enum: postConstants.POST_STATUS,
-    default: postConstants.POST_STATUS.PENDING,
+    enum: POST_STATUS,
+    default: POST_STATUS.PENDING,
   })
   status: string;
 
