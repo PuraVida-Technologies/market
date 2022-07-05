@@ -1,11 +1,22 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Category } from '../../models';
+import { Model } from 'mongoose';
 import { CreateAdminCategoryInput } from './dto/create-admin-category.input';
 import { UpdateAdminCategoryInput } from './dto/update-admin-category.input';
 
 @Injectable()
 export class AdminCategoryService {
-  create(createAdminCategoryInput: CreateAdminCategoryInput) {
-    return 'This action adds a new adminCategory';
+  constructor(
+    @InjectModel(Category.name)
+    private readonly categoryModel: Model<Category>,
+  ) {}
+
+  async create(
+    createAdminCategoryInput: CreateAdminCategoryInput,
+  ): Promise<Category> {
+    const category = new this.categoryModel(createAdminCategoryInput);
+    return this.categoryModel.create(category);
   }
 
   findAll() {
