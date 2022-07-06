@@ -16,13 +16,13 @@ export class AdminCategoryResolver {
     return this.adminCategoryService.create(createAdminCategoryInput);
   }
 
-  @Query(() => [AdminCategory], { name: 'adminCategory' })
+  @Query(() => [AdminCategory], { name: 'adminCategories' })
   findAll() {
     return this.adminCategoryService.findAll();
   }
 
   @Query(() => AdminCategory, { name: 'adminCategory' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  findOne(@Args('id', { type: () => String }) id: string) {
     return this.adminCategoryService.findOne(id);
   }
 

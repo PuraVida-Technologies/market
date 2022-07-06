@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Category } from '../../models';
 import { Model } from 'mongoose';
@@ -15,15 +19,23 @@ export class AdminCategoryService {
   async create(
     createAdminCategoryInput: CreateAdminCategoryInput,
   ): Promise<Category> {
+    const category = this.categoryModel.findOne({
+      name: createAdminCategoryInput.name,
+    });
+
+    if (category) {
+      throw new ConflictException('Category already exist');
+    }
+
     return this.categoryModel.create(createAdminCategoryInput);
   }
 
   findAll() {
-    return `This action returns all adminCategory`;
+    return this.categoryModel.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} adminCategory`;
+  findOne(id: string) {
+    return this.categoryModel.findOne({ _id: id });
   }
 
   update(id: number, updateAdminCategoryInput: UpdateAdminCategoryInput) {
