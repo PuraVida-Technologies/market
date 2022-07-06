@@ -15,8 +15,7 @@ export class AdminCategoryService {
   async create(
     createAdminCategoryInput: CreateAdminCategoryInput,
   ): Promise<Category> {
-    const category = new this.categoryModel(createAdminCategoryInput);
-    return this.categoryModel.create(category);
+    return this.categoryModel.create(createAdminCategoryInput);
   }
 
   findAll() {
