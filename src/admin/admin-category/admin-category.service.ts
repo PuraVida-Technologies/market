@@ -21,6 +21,7 @@ export class AdminCategoryService {
   ): Promise<Category> {
     const category = await this.categoryModel.findOne({
       name: createAdminCategoryInput.name,
+      isDeleted: false,
     });
     console.log(category);
 
