@@ -19,23 +19,24 @@ export class AdminCategoryService {
   async create(
     createAdminCategoryInput: CreateAdminCategoryInput,
   ): Promise<Category> {
-    const category = this.categoryModel.findOne({
+    const category = await this.categoryModel.findOne({
       name: createAdminCategoryInput.name,
     });
+    console.log(category);
 
     if (category) {
       throw new ConflictException('Category already exist');
     }
 
-    return this.categoryModel.create(createAdminCategoryInput);
+    return await this.categoryModel.create(createAdminCategoryInput);
   }
 
-  findAll() {
-    return this.categoryModel.find();
+  async findAll() {
+    return await this.categoryModel.find();
   }
 
-  findOne(id: string) {
-    return this.categoryModel.findOne({ _id: id });
+  async findOne(id: string) {
+    return await this.categoryModel.findOne({ _id: id });
   }
 
   update(id: number, updateAdminCategoryInput: UpdateAdminCategoryInput) {
