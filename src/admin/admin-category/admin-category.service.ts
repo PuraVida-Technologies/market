@@ -23,21 +23,20 @@ export class AdminCategoryService {
       name: createAdminCategoryInput.name,
       isDeleted: false,
     });
-    console.log(category);
 
     if (category) {
       throw new ConflictException('Category already exist');
     }
 
-    return await this.categoryModel.create(createAdminCategoryInput);
+    return this.categoryModel.create(createAdminCategoryInput);
   }
 
   async findAll() {
-    return await this.categoryModel.find();
+    return await this.categoryModel.find({ isDeleted: false });
   }
 
   async findOne(id: string) {
-    return await this.categoryModel.findOne({ _id: id });
+    return await this.categoryModel.findOne({ _id: id, isDeleted: false });
   }
 
   update(id: number, updateAdminCategoryInput: UpdateAdminCategoryInput) {
