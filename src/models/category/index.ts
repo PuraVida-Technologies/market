@@ -19,6 +19,7 @@ export class Category {
   @Prop()
   updatedAt: Date;
 
+  @Field(() => Boolean)
   @Prop({ default: false })
   isDeleted: boolean;
 }

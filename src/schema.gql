@@ -3,8 +3,10 @@
 # ------------------------------------------------------
 
 type AdminCategory {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  _id: String!
+  createdAt: DateTime!
+  name: String!
+  updatedAt: DateTime!
 }
 
 type AdminPost {
@@ -34,13 +36,14 @@ input ApproveOrDeclinePostInput {
 type Category {
   _id: String!
   createdAt: DateTime!
+  isDeleted: Boolean!
   name: String!
   updatedAt: DateTime!
 }
 
 input CreateAdminCategoryInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  """This is the name of category"""
+  name: String!
 }
 
 input CreateAdminPostInput {
@@ -137,16 +140,18 @@ type Mutation {
 }
 
 type Query {
-  adminCategory(id: Int!): AdminCategory!
+  adminCategories: [AdminCategory!]!
+  adminCategory(id: String!): AdminCategory!
   adminPost(id: Int!): AdminPost!
   marketplaceCategory(id: Int!): MarketplaceCategory!
   marketplacePost(id: Int!): MarketplacePost!
 }
 
 input UpdateAdminCategoryInput {
-  """Example field (placeholder)"""
-  exampleField: Int
   id: Int!
+
+  """This is the name of category"""
+  name: String
 }
 
 input UpdateAdminPostInput {

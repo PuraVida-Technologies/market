@@ -1,19 +1,38 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Category } from '../../models';
+import { Model } from 'mongoose';
 import { CreateAdminCategoryInput } from './dto/create-admin-category.input';
 import { UpdateAdminCategoryInput } from './dto/update-admin-category.input';
 
 @Injectable()
 export class AdminCategoryService {
-  create(createAdminCategoryInput: CreateAdminCategoryInput) {
-    return 'This action adds a new adminCategory';
+  constructor(
+    @InjectModel(Category.name)
+    private readonly categoryModel: Model<Category>,
+  ) {}
+
+  async create(
+    createAdminCategoryInput: CreateAdminCategoryInput,
+  ): Promise<Category> {
+    const category = await this.categoryModel.findOne({
+      name: createAdminCategoryInput.name,
+      isDeleted: false,
+    });
+
+    if (category) {
+      throw new ConflictException('Category with this name already exist');
+    }
+
+    return this.categoryModel.create(createAdminCategoryInput);
   }
 
-  findAll() {
-    return `This action returns all adminCategory`;
+  async findAll() {
+    return this.categoryModel.find({ isDeleted: false });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} adminCategory`;
+  async findOne(id: string) {
+    return this.categoryModel.findOne({ _id: id, isDeleted: false });
   }
 
   update(id: number, updateAdminCategoryInput: UpdateAdminCategoryInput) {
