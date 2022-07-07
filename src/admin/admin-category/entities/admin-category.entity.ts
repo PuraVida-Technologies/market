@@ -13,7 +13,4 @@ export class AdminCategory {
 
   @Field(() => Date)
   updatedAt: Date;
-
-  @Field(() => Boolean)
-  isDeleted: boolean;
 }

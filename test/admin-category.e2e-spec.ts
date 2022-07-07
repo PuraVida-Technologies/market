@@ -8,13 +8,11 @@ import { setupTestApp } from '../test/resources/app-test.module';
 import { closeInMongodConnection } from './mongo.connection';
 
 import { Category } from '../src/models';
-import { generateCategory } from './resources';
 
 describe('Admin Category resolvers (e2e)', () => {
   let app: INestApplication;
   let moduleFixture: TestingModule;
   let categoryModel: Model<Category>;
-  const category = generateCategory();
 
   beforeAll(async () => {
     ({ app, moduleFixture } = await setupTestApp());
@@ -40,11 +38,10 @@ describe('Admin Category resolvers (e2e)', () => {
       const createAdminCategory = `
       mutation {
         createAdminCategory(createAdminCategoryInput:{
-          name: "${category.name}"
+          name: "test"
       }){
         _id
         name
-        isDeleted
         createdAt
         updatedAt
       }
@@ -58,7 +55,32 @@ describe('Admin Category resolvers (e2e)', () => {
       const { name } = body.data.createAdminCategory;
 
       expect(body.errors).toBeUndefined();
-      expect(name).toBe(category.name);
+      expect(name).toBe('test');
+    });
+
+    it('Should fail to add category, the category already exists', async () => {
+      await categoryModel.create({ name: 'testing' });
+
+      const createAdminCategory = `
+      mutation {
+        createAdminCategory(createAdminCategoryInput:{
+          name: "testing"
+      }){
+        _id
+        name
+        createdAt
+        updatedAt
+      }
+      }`;
+
+      const { body } = await request(app.getHttpServer())
+        .post('/graphql')
+        .set('Content-Type', 'application/json')
+        .send({ query: createAdminCategory });
+      const { errors } = body;
+
+      expect(errors).toBeDefined();
+      expect(errors[0].message).not.toBeNull();
     });
 
     it('Should fail to add category, bad request', async () => {
@@ -67,7 +89,6 @@ describe('Admin Category resolvers (e2e)', () => {
         createAdminCategory(createAdminCategoryInput:{}) {
           _id
           name
-          isDeleted
           createdAt
           updatedAt
         }

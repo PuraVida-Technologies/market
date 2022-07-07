@@ -1,8 +1,4 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Category } from '../../models';
 import { Model } from 'mongoose';
@@ -25,18 +21,18 @@ export class AdminCategoryService {
     });
 
     if (category) {
-      throw new ConflictException('Category already exist');
+      throw new ConflictException('Category with this name already exist');
     }
 
     return this.categoryModel.create(createAdminCategoryInput);
   }
 
   async findAll() {
-    return await this.categoryModel.find({ isDeleted: false });
+    return this.categoryModel.find({ isDeleted: false });
   }
 
   async findOne(id: string) {
-    return await this.categoryModel.findOne({ _id: id, isDeleted: false });
+    return this.categoryModel.findOne({ _id: id, isDeleted: false });
   }
 
   update(id: number, updateAdminCategoryInput: UpdateAdminCategoryInput) {
