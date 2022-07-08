@@ -33,10 +33,7 @@ export class MarketplacePostResolver {
     @Args('updateMarketplacePostInput')
     updateMarketplacePostInput: UpdateMarketplacePostInput,
   ) {
-    return this.marketplacePostService.update(
-      updateMarketplacePostInput.id,
-      updateMarketplacePostInput,
-    );
+    return this.marketplacePostService.update(updateMarketplacePostInput);
   }
 
   @Mutation(() => MarketplacePost)
