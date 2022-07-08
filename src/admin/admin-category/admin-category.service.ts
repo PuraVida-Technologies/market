@@ -1,4 +1,9 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Category } from '../../models';
 import { Model } from 'mongoose';
@@ -35,8 +40,21 @@ export class AdminCategoryService {
     return this.categoryModel.findOne({ _id: id, isDeleted: false });
   }
 
-  update(id: number, updateAdminCategoryInput: UpdateAdminCategoryInput) {
-    return `This action updates a #${id} adminCategory`;
+  async update(id: string, updateAdminCategoryInput: UpdateAdminCategoryInput) {
+    const category = await this.categoryModel.findById(id);
+    if (!category) {
+      throw new NotFoundException('The category does not exists');
+    }
+
+    if (updateAdminCategoryInput.name.length) {
+      return this.categoryModel.findOneAndUpdate(
+        { _id: id },
+        { $set: updateAdminCategoryInput },
+        { new: true, lean: true },
+      );
+    } else {
+      throw new BadRequestException('Bad request');
+    }
   }
 
   remove(id: number) {

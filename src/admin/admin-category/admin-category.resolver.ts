@@ -28,13 +28,13 @@ export class AdminCategoryResolver {
 
   @Mutation(() => AdminCategory)
   updateAdminCategory(
+    @Args('id')
+    id: string,
+
     @Args('updateAdminCategoryInput')
     updateAdminCategoryInput: UpdateAdminCategoryInput,
   ) {
-    return this.adminCategoryService.update(
-      updateAdminCategoryInput.id,
-      updateAdminCategoryInput,
-    );
+    return this.adminCategoryService.update(id, updateAdminCategoryInput);
   }
 
   @Mutation(() => AdminCategory)
