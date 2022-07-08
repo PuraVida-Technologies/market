@@ -40,7 +40,7 @@ export class MarketplacePostResolver {
   }
 
   @Mutation(() => MarketplacePost)
-  removeMarketplacePost(@Args('id', { type: () => Int }) id: number) {
+  removeMarketplacePost(@Args('id', { type: () => String }) id: string) {
     return this.marketplacePostService.remove(id);
   }
 }
