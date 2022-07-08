@@ -6,7 +6,7 @@ export const generateCategory = () => {
   const category = new Category();
 
   category._id = new mongoose.Types.ObjectId().toString();
-  category.name = faker.datatype.string(10);
+  category.name = faker.name.title();
 
   return category;
 };

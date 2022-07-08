@@ -58,7 +58,17 @@ export class MarketplacePostService {
     return `This action updates a #${id} marketplacePost`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} marketplacePost`;
+  async remove(id: string) {
+    const deletedPost = await this.postModel.findOneAndUpdate(
+      { _id: id },
+      { $set: { isDeleted: true } },
+      { new: true, lean: true },
+    );
+
+    if (!deletedPost) {
+      throw new NotFoundException('This post is not exists');
+    }
+
+    return deletedPost;
   }
 }
