@@ -13,11 +13,11 @@ export const generatePost = () => {
   }
 
   post._id = new mongoose.Types.ObjectId().toString();
-  post.name = faker.datatype.string(10);
-  post.description = faker.datatype.string(100);
+  post.name = faker.name.firstName();
+  post.description = faker.lorem.paragraph(30);
   post.mainImageUrl = faker.image.avatar();
   post.imagesUrls = images;
-  post.address = faker.datatype.string(15);
+  post.address = `${faker.address.cityName()}, ${faker.address.direction()}`;
   post.location = {
     coordinates: [+faker.address.longitude(), +faker.address.latitude()],
     type: 'Point',
@@ -33,7 +33,7 @@ export const generatePost = () => {
   post.userId = new mongoose.Types.ObjectId().toString();
   post.price = faker.datatype.number();
   post.status = POST_STATUS.PENDING;
-  post.openHours = faker.datatype.string(20);
+  post.openHours = `${faker.date.future()}`;
 
   return post;
 };
