@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Category } from '../../models';
 import { Model } from 'mongoose';
@@ -39,7 +43,17 @@ export class AdminCategoryService {
     return `This action updates a #${id} adminCategory`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} adminCategory`;
+  async remove(id: string) {
+    const deletedCategory = await this.categoryModel.findOneAndUpdate(
+      { _id: id },
+      { $set: { isDeleted: true } },
+      { new: true, lean: true },
+    );
+
+    if (!deletedCategory) {
+      throw new NotFoundException('This category does not exists');
+    }
+
+    return deletedCategory;
   }
 }

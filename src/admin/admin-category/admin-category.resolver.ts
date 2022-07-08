@@ -38,7 +38,7 @@ export class AdminCategoryResolver {
   }
 
   @Mutation(() => AdminCategory)
-  removeAdminCategory(@Args('id', { type: () => Int }) id: number) {
+  removeAdminCategory(@Args('id', { type: () => String }) id: string) {
     return this.adminCategoryService.remove(id);
   }
 }
