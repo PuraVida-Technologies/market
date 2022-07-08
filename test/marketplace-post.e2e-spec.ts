@@ -10,7 +10,7 @@ import { setupTestApp } from '../test/resources/app-test.module';
 import { closeInMongodConnection } from './mongo.connection';
 
 import { Category, Post } from '../src/models';
-import { generateCategory } from './resources';
+import { generateCategory, generatePost } from './resources';
 
 describe('Marketplace Post resolvers (e2e)', () => {
   let app: INestApplication;
@@ -201,6 +201,79 @@ describe('Marketplace Post resolvers (e2e)', () => {
       expect(statusCode).toEqual(StatusCodes.OK);
       expect(errors[0].message).toBe('the category does not exists');
       expect(+errors[0].extensions.code).toBe(StatusCodes.NOT_FOUND);
+    });
+  });
+
+  describe('Delete Post', () => {
+    afterEach(async () => {
+      await postModel.deleteMany({});
+    });
+
+    it('Should delete post successfully', async () => {
+      const category = await categoryModel.findOne({}).lean();
+
+      const post = await postModel.create({
+        ...generatePost(),
+        categoryId: category._id,
+        category,
+      });
+
+      const deleteMarketplacePost = `
+      mutation {
+        removeMarketplacePost(id: "${post._id}"){
+          _id
+          address
+          categoryId
+          description
+          imagesUrls
+          mainImageUrl
+          name
+          openHours
+          price
+          userId
+          }
+        }`;
+
+      const { body } = await request(app.getHttpServer())
+        .post('/graphql')
+        .set('Content-Type', 'application/json')
+        .send({ query: deleteMarketplacePost });
+
+      expect(body.errors).toBeUndefined();
+
+      const deletePost = await postModel.findById(post._id);
+
+      expect(deletePost.isDeleted).toBe(true);
+    });
+
+    it('Should fail to delete post, post not exists', async () => {
+      const category = await categoryModel.findOne({}).lean();
+
+      const deleteMarketplacePost = `
+      mutation {
+        removeMarketplacePost(id: "${category._id}"){
+          _id
+          address
+          categoryId
+          description
+          imagesUrls
+          mainImageUrl
+          name
+          openHours
+          price
+          userId
+          }
+        }`;
+
+      const { body } = await request(app.getHttpServer())
+        .post('/graphql')
+        .set('Content-Type', 'application/json')
+        .send({ query: deleteMarketplacePost });
+
+      const { errors } = body;
+
+      expect(errors).toBeDefined();
+      expect(errors[0].message).not.toBeNull();
     });
   });
 });
