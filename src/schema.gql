@@ -178,7 +178,6 @@ input UpdateMarketplacePostInput {
 
   """This is the Owner email"""
   email: String
-  id: Int!
 
   """This is the rest of images"""
   imagesUrls: [String!]
@@ -200,6 +199,9 @@ input UpdateMarketplacePostInput {
 
   """This is the Owner phone number"""
   phoneNumber: String
+
+  """This is the post id"""
+  postId: String!
 
   """This is the price"""
   price: Float
