@@ -5,7 +5,7 @@ import { createPostFormat } from '../../common/helpers';
 import { Category, Post } from '../../models';
 import { CreateMarketplacePostInput } from './dto/create-marketplace-post.input';
 import { UpdateMarketplacePostInput } from './dto/update-marketplace-post.input';
-
+import { GetAllDto } from '../../common/inputs/get-all.input';
 @Injectable()
 export class MarketplacePostService {
   constructor(
@@ -34,8 +34,15 @@ export class MarketplacePostService {
     return this.postModel.create(post);
   }
 
-  findAll() {
-    return `This action returns all marketplacePost`;
+  findAll(getMarketplacePostInput: GetAllDto) {
+    const { limit, order, page, sortBy } = getMarketplacePostInput;
+
+    return this.postModel
+      .find({ isDeleted: false })
+      .sort({ [sortBy]: order })
+      .skip(page * limit - limit)
+      .limit(limit)
+      .lean();
   }
 
   findOne(id: number) {
