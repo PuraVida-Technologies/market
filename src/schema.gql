@@ -102,6 +102,20 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+input GetAllDto {
+  """This is limit number"""
+  limit: Float = 10
+
+  """This is the field sort by it"""
+  order: String = "asc"
+
+  """This is the page number"""
+  page: Float = 1
+
+  """This is the field sort by it"""
+  sortBy: String = "createdAt"
+}
+
 type MarketplaceCategory {
   """Example field (placeholder)"""
   exampleField: Int!
@@ -143,8 +157,9 @@ type Query {
   adminCategories: [AdminCategory!]!
   adminCategory(id: String!): AdminCategory!
   adminPost(id: Int!): AdminPost!
+  findOne(id: Int!): MarketplacePost!
+  getMarketplacePosts(getMarketplacePostsInput: GetAllDto!): [MarketplacePost!]
   marketplaceCategory(id: Int!): MarketplaceCategory!
-  marketplacePost(id: Int!): MarketplacePost!
 }
 
 input UpdateAdminCategoryInput {
