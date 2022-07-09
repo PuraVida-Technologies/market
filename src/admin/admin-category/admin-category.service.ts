@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -41,20 +40,18 @@ export class AdminCategoryService {
   }
 
   async update(id: string, updateAdminCategoryInput: UpdateAdminCategoryInput) {
-    const category = await this.categoryModel.findById(id);
+    const category = await this.categoryModel
+      .findOne({ _id: id, isDeleted: false })
+      .lean();
     if (!category) {
       throw new NotFoundException('The category does not exists');
     }
 
-    if (updateAdminCategoryInput.name.length) {
-      return this.categoryModel.findOneAndUpdate(
-        { _id: id },
-        { $set: updateAdminCategoryInput },
-        { new: true, lean: true },
-      );
-    } else {
-      throw new BadRequestException('Bad request');
-    }
+    return this.categoryModel.findOneAndUpdate(
+      { _id: id },
+      { $set: updateAdminCategoryInput },
+      { new: true, lean: true },
+    );
   }
 
   remove(id: number) {

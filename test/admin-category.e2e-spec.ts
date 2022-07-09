@@ -9,6 +9,7 @@ import { setupTestApp } from '../test/resources/app-test.module';
 import { closeInMongodConnection } from './mongo.connection';
 
 import { Category } from '../src/models';
+import { generateCategory } from './resources';
 
 describe('Admin Category resolvers (e2e)', () => {
   let app: INestApplication;
@@ -31,6 +32,10 @@ describe('Admin Category resolvers (e2e)', () => {
   });
 
   describe('Add Category', () => {
+    afterEach(async () => {
+      await categoryModel.deleteMany({});
+    });
+
     it('Should add category successfully', async () => {
       const createAdminCategory = `
       mutation {
@@ -106,6 +111,10 @@ describe('Admin Category resolvers (e2e)', () => {
   });
 
   describe('Update Category', () => {
+    afterEach(async () => {
+      await categoryModel.deleteMany({});
+    });
+
     const updateAdminCategory = `
     mutation UpdateAdminCategory($updateAdminCategoryId: String!, $updateAdminCategoryInput: UpdateAdminCategoryInput!) {
       updateAdminCategory(id: $updateAdminCategoryId, updateAdminCategoryInput: $updateAdminCategoryInput) {
@@ -118,7 +127,7 @@ describe('Admin Category resolvers (e2e)', () => {
     `;
 
     it('Should update category successfully', async () => {
-      const category = await categoryModel.findOne({}).lean();
+      const category = await categoryModel.create(generateCategory());
 
       const { body } = await request(app.getHttpServer())
         .post('/graphql')
@@ -137,26 +146,6 @@ describe('Admin Category resolvers (e2e)', () => {
 
       expect(body.errors).toBeUndefined();
       expect(name).toBe('Updated Name');
-    });
-
-    it('Should fail to update category, bad request', async () => {
-      const category = await categoryModel.findOne({}).lean();
-
-      const { body } = await request(app.getHttpServer())
-        .post('/graphql')
-        .set('Content-Type', 'application/json')
-        .send({
-          query: updateAdminCategory,
-          variables: {
-            updateAdminCategoryInput: {},
-            updateAdminCategoryId: category._id,
-          },
-        });
-
-      const { errors } = body;
-
-      expect(errors).toBeDefined();
-      expect(errors[0].message).not.toBeNull();
     });
 
     it('Should fail to update category, category not exists', async () => {
