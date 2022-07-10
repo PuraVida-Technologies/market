@@ -51,7 +51,7 @@ describe('Admin Post resolvers (e2e)', () => {
     it('Should Approve post successfully', async () => {
       const post = await postModel.findOne({}).lean();
 
-      const createMarketplacePost = `
+      const approveOrDeclineAdminPost = `
       mutation {
         approveOrDeclinePost(approveOrDeclinePostInput:{
           postId: "${post._id.toString()}"          
@@ -74,7 +74,7 @@ describe('Admin Post resolvers (e2e)', () => {
       const { body } = await request(app.getHttpServer())
         .post('/graphql')
         .set('Content-Type', 'application/json')
-        .send({ query: createMarketplacePost });
+        .send({ query: approveOrDeclineAdminPost });
 
       const { status } = body.data.approveOrDeclinePost;
 
@@ -85,7 +85,7 @@ describe('Admin Post resolvers (e2e)', () => {
     it('Should Decline post successfully', async () => {
       const post = await postModel.findOne({}).lean();
 
-      const createMarketplacePost = `
+      const approveOrDeclineAdminPost = `
       mutation {
         approveOrDeclinePost(approveOrDeclinePostInput:{
           postId: "${post._id.toString()}"          
@@ -108,7 +108,7 @@ describe('Admin Post resolvers (e2e)', () => {
       const { body } = await request(app.getHttpServer())
         .post('/graphql')
         .set('Content-Type', 'application/json')
-        .send({ query: createMarketplacePost });
+        .send({ query: approveOrDeclineAdminPost });
 
       const { status } = body.data.approveOrDeclinePost;
 
@@ -117,7 +117,7 @@ describe('Admin Post resolvers (e2e)', () => {
     });
 
     it('Should fail to change post status, bad request', async () => {
-      const createMarketplacePost = `
+      const approveOrDeclineAdminPost = `
       mutation {
         approveOrDeclinePost(approveOrDeclinePostInput:{          
           status: "${POST_STATUS.DECLINE}"
@@ -139,7 +139,7 @@ describe('Admin Post resolvers (e2e)', () => {
       const { body } = await request(app.getHttpServer())
         .post('/graphql')
         .set('Content-Type', 'application/json')
-        .send({ query: createMarketplacePost });
+        .send({ query: approveOrDeclineAdminPost });
 
       const { errors } = body;
 
@@ -158,7 +158,7 @@ describe('Admin Post resolvers (e2e)', () => {
         { lean: true },
       );
 
-      const createMarketplacePost = `
+      const approveOrDeclineAdminPost = `
       mutation {
         approveOrDeclinePost(approveOrDeclinePostInput:{
           postId: "${post._id.toString()}"       
@@ -181,12 +181,88 @@ describe('Admin Post resolvers (e2e)', () => {
       const { body } = await request(app.getHttpServer())
         .post('/graphql')
         .set('Content-Type', 'application/json')
-        .send({ query: createMarketplacePost });
+        .send({ query: approveOrDeclineAdminPost });
 
       const { errors } = body;
 
       expect(errors).toBeDefined();
       expect(errors[0].message).toBe('This post is not exists');
+    });
+  });
+
+  describe('Delete Post', () => {
+    let category: Category;
+    beforeEach(async () => {
+      category = await categoryModel.findOne({});
+    });
+
+    afterEach(async () => {
+      await postModel.deleteMany({});
+    });
+
+    it('Should Approve post successfully', async () => {
+      const post = await postModel.create({
+        ...generatePost(),
+        category,
+        categoryId: category._id,
+      });
+
+      const deleteAdminPost = `
+      mutation {
+        removeAdminPost(id: "${post._id}"){
+          _id
+          address
+          categoryId
+          description
+          imagesUrls
+          mainImageUrl
+          name
+          openHours
+          price
+          userId
+          status
+         }
+        }`;
+
+      const { body } = await request(app.getHttpServer())
+        .post('/graphql')
+        .set('Content-Type', 'application/json')
+        .send({ query: deleteAdminPost });
+
+      const { _id } = body.data.removeAdminPost;
+      expect(body.errors).toBeUndefined();
+      expect(_id.toString()).toBe(post._id.toString());
+
+      const deletedPost = await postModel.findById(_id);
+      expect(deletedPost.isDeleted).toBe(true);
+    });
+
+    it('Should Approve post successfully', async () => {
+      const deleteAdminPost = `
+      mutation {
+        removeAdminPost(id: "${category._id}"){
+          _id
+          address
+          categoryId
+          description
+          imagesUrls
+          mainImageUrl
+          name
+          openHours
+          price
+          userId
+          status
+         }
+        }`;
+
+      const { body } = await request(app.getHttpServer())
+        .post('/graphql')
+        .set('Content-Type', 'application/json')
+        .send({ query: deleteAdminPost });
+
+      const { errors } = body;
+      expect(errors).toBeDefined();
+      expect(errors[0].message).not.toBeNull();
     });
   });
 });
