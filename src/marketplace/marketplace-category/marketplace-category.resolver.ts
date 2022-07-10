@@ -1,8 +1,7 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Args, Int } from '@nestjs/graphql';
 import { MarketplaceCategoryService } from './marketplace-category.service';
 import { MarketplaceCategory } from './entities/marketplace-category.entity';
-import { CreateMarketplaceCategoryInput } from './dto/create-marketplace-category.input';
-import { UpdateMarketplaceCategoryInput } from './dto/update-marketplace-category.input';
+import { AutoCompleteCategoryInput } from './dto/auto-complete.input';
 
 @Resolver(() => MarketplaceCategory)
 export class MarketplaceCategoryResolver {
@@ -10,13 +9,15 @@ export class MarketplaceCategoryResolver {
     private readonly marketplaceCategoryService: MarketplaceCategoryService,
   ) {}
 
-  @Mutation(() => MarketplaceCategory)
-  createMarketplaceCategory(
-    @Args('createMarketplaceCategoryInput')
-    createMarketplaceCategoryInput: CreateMarketplaceCategoryInput,
+  @Query(() => [MarketplaceCategory], {
+    name: 'marketplaceAutoCompleteCategory',
+  })
+  autoComplete(
+    @Args('autoCompleteCategoryInput')
+    autoCompleteCategoryInput: AutoCompleteCategoryInput,
   ) {
-    return this.marketplaceCategoryService.create(
-      createMarketplaceCategoryInput,
+    return this.marketplaceCategoryService.autoComplete(
+      autoCompleteCategoryInput,
     );
   }
 
@@ -28,21 +29,5 @@ export class MarketplaceCategoryResolver {
   @Query(() => MarketplaceCategory, { name: 'marketplaceCategory' })
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.marketplaceCategoryService.findOne(id);
-  }
-
-  @Mutation(() => MarketplaceCategory)
-  updateMarketplaceCategory(
-    @Args('updateMarketplaceCategoryInput')
-    updateMarketplaceCategoryInput: UpdateMarketplaceCategoryInput,
-  ) {
-    return this.marketplaceCategoryService.update(
-      updateMarketplaceCategoryInput.id,
-      updateMarketplaceCategoryInput,
-    );
-  }
-
-  @Mutation(() => MarketplaceCategory)
-  removeMarketplaceCategory(@Args('id', { type: () => Int }) id: number) {
-    return this.marketplaceCategoryService.remove(id);
   }
 }
