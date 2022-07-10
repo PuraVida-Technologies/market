@@ -119,7 +119,7 @@ describe('Admin Category resolvers (e2e)', () => {
     `;
 
     it('Should delete category successfully', async () => {
-      const category = await categoryModel.findOne({}).lean();
+      const category = await categoryModel.create(generateCategory());
 
       const { body } = await request(app.getHttpServer())
         .post('/graphql')
