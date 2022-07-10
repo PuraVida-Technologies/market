@@ -276,4 +276,166 @@ describe('Marketplace Post resolvers (e2e)', () => {
       expect(errors[0].message).not.toBeNull();
     });
   });
+
+  describe('Update Post', () => {
+    afterEach(async () => {
+      await postModel.deleteMany({});
+    });
+
+    it('Should update post successfully', async () => {
+      const category = await categoryModel.findOne({}).lean();
+
+      const post = await postModel.create({
+        ...generatePost(),
+        categoryId: category._id,
+        category,
+      });
+
+      const updateMarketplacePost = `
+      mutation {
+        updateMarketplacePost(updateMarketplacePostInput: {
+          postId: "${post._id}"
+          name: "Updated Name"
+          price: 1000
+        }){
+          _id
+          address
+          categoryId
+          description
+          imagesUrls
+          mainImageUrl
+          name
+          openHours
+          price
+          userId
+          }
+        }`;
+
+      const { body } = await request(app.getHttpServer())
+        .post('/graphql')
+        .set('Content-Type', 'application/json')
+        .send({ query: updateMarketplacePost });
+
+      const { name, price } = body.data.updateMarketplacePost;
+
+      expect(body.errors).toBeUndefined();
+      expect(name).toBe('Updated Name');
+      expect(price).toBe(1000);
+    });
+
+    it('Should fail to update post, bad request', async () => {
+      const category = await categoryModel.findOne({}).lean();
+
+      const post = await postModel.create({
+        ...generatePost(),
+        categoryId: category._id,
+        category,
+      });
+
+      const updateMarketplacePost = `
+      mutation {
+        updateMarketplacePost(updateMarketplacePostInput: {
+          postId: "${post._id}"
+          name: ""
+          price: "name"
+        }){
+          _id
+          address
+          categoryId
+          description
+          imagesUrls
+          mainImageUrl
+          name
+          openHours
+          price
+          userId
+          }
+        }`;
+
+      const { body } = await request(app.getHttpServer())
+        .post('/graphql')
+        .set('Content-Type', 'application/json')
+        .send({ query: updateMarketplacePost });
+
+      const { errors } = body;
+
+      expect(errors).toBeDefined();
+      expect(errors[0].message).not.toBeNull();
+    });
+
+    it('Should fail to update post, post not exists', async () => {
+      const category = await categoryModel.findOne({}).lean();
+
+      const updateMarketplacePost = `
+      mutation {
+        updateMarketplacePost(updateMarketplacePostInput: {
+          postId: "${category._id}"
+          name: "update one"
+          price: 100
+        }){
+          _id
+          address
+          categoryId
+          description
+          imagesUrls
+          mainImageUrl
+          name
+          openHours
+          price
+          userId
+          }
+        }`;
+
+      const { body } = await request(app.getHttpServer())
+        .post('/graphql')
+        .set('Content-Type', 'application/json')
+        .send({ query: updateMarketplacePost });
+
+      const { errors } = body;
+
+      expect(errors).toBeDefined();
+      expect(errors[0].message).not.toBeNull();
+    });
+
+    it('Should fail to update post, category not exists', async () => {
+      const category = await categoryModel.findOne({}).lean();
+
+      const post = await postModel.create({
+        ...generatePost(),
+        categoryId: category._id,
+        category,
+      });
+
+      const updateMarketplacePost = `
+      mutation {
+        updateMarketplacePost(updateMarketplacePostInput: {
+          postId: "${post._id}"
+          name: "Test"
+          price: 100
+          categoryId: "${post._id}"
+        }){
+          _id
+          address
+          categoryId
+          description
+          imagesUrls
+          mainImageUrl
+          name
+          openHours
+          price
+          userId
+          }
+        }`;
+
+      const { body } = await request(app.getHttpServer())
+        .post('/graphql')
+        .set('Content-Type', 'application/json')
+        .send({ query: updateMarketplacePost });
+
+      const { errors } = body;
+
+      expect(errors).toBeDefined();
+      expect(errors[0].message).not.toBeNull();
+    });
+  });
 });

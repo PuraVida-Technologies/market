@@ -1,7 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Category, Location, Owner, Post } from '../../models';
+import { createPostFormat } from '../../common/helpers';
+import { Category, Post } from '../../models';
 import { CreateMarketplacePostInput } from './dto/create-marketplace-post.input';
 import { UpdateMarketplacePostInput } from './dto/update-marketplace-post.input';
 
@@ -12,8 +13,7 @@ export class MarketplacePostService {
     @InjectModel(Category.name) private readonly categoryModel: Model<Category>,
   ) {}
   async create(createMarketplacePostInput: CreateMarketplacePostInput) {
-    const { longitude, latitude, phoneNumber, email, categoryId } =
-      createMarketplacePostInput;
+    const { categoryId } = createMarketplacePostInput;
 
     const category: Category = await this.categoryModel
       .findOne({
@@ -26,20 +26,8 @@ export class MarketplacePostService {
       throw new NotFoundException('the category does not exists');
     }
 
-    const ownerInfo: Owner = {
-      phoneNumber,
-      email,
-    };
-
-    const location: Location = {
-      type: 'Point',
-      coordinates: [longitude, latitude],
-    };
-
     const post = {
-      ...createMarketplacePostInput,
-      location,
-      ownerInfo,
+      ...createPostFormat(createMarketplacePostInput),
       category,
     };
 
@@ -54,8 +42,32 @@ export class MarketplacePostService {
     return `This action returns a #${id} marketplacePost`;
   }
 
-  update(id: number, updateMarketplacePostInput: UpdateMarketplacePostInput) {
-    return `This action updates a #${id} marketplacePost`;
+  async update(updateMarketplacePostInput: UpdateMarketplacePostInput) {
+    const { postId, categoryId } = updateMarketplacePostInput;
+
+    const post = await this.getOneById(postId);
+
+    if (!post) {
+      throw new NotFoundException('This post not exists');
+    }
+
+    let category: Category;
+
+    if (categoryId) {
+      category = await this.getCategoryById(categoryId);
+
+      if (!category) {
+        throw new NotFoundException('This category not exists');
+      }
+    }
+
+    const newPost = createPostFormat(updateMarketplacePostInput);
+
+    return this.postModel.findOneAndUpdate(
+      { isDeleted: false, _id: postId },
+      { $set: { ...newPost, category: { ...category } } },
+      { new: true, lean: true },
+    );
   }
 
   async remove(id: string) {
@@ -70,5 +82,13 @@ export class MarketplacePostService {
     }
 
     return deletedPost;
+  }
+
+  getOneById(id: string) {
+    return this.postModel.findOne({ isDeleted: false, _id: id }).lean();
+  }
+
+  getCategoryById(id: string) {
+    return this.categoryModel.findOne({ isDeleted: false, _id: id }).lean();
   }
 }

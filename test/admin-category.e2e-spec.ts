@@ -3,12 +3,13 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { Model } from 'mongoose';
 import { getModelToken } from '@nestjs/mongoose';
+import { ObjectId } from 'bson';
 
 import { setupTestApp } from '../test/resources/app-test.module';
 import { closeInMongodConnection } from './mongo.connection';
 
 import { Category } from '../src/models';
-import { ObjectId } from 'bson';
+import { generateCategory } from './resources';
 
 describe('Admin Category resolvers (e2e)', () => {
   let app: INestApplication;
@@ -161,6 +162,64 @@ describe('Admin Category resolvers (e2e)', () => {
         .send({
           query: removeAdminCategory,
           variables: {},
+        });
+
+      const { errors } = body;
+
+      expect(errors).toBeDefined();
+      expect(errors[0].message).not.toBeNull();
+    });
+  });
+  describe('Update Category', () => {
+    afterEach(async () => {
+      await categoryModel.deleteMany({});
+    });
+
+    const updateAdminCategory = `
+    mutation UpdateAdminCategory($updateAdminCategoryId: String!, $updateAdminCategoryInput: UpdateAdminCategoryInput!) {
+      updateAdminCategory(id: $updateAdminCategoryId, updateAdminCategoryInput: $updateAdminCategoryInput) {
+        _id
+        createdAt
+        name
+        updatedAt
+      }
+    }
+    `;
+
+    it('Should update category successfully', async () => {
+      const category = await categoryModel.create(generateCategory());
+
+      const { body } = await request(app.getHttpServer())
+        .post('/graphql')
+        .set('Content-Type', 'application/json')
+        .send({
+          query: updateAdminCategory,
+          variables: {
+            updateAdminCategoryInput: {
+              name: 'Updated Name',
+            },
+            updateAdminCategoryId: category._id,
+          },
+        });
+
+      const { name } = body.data.updateAdminCategory;
+
+      expect(body.errors).toBeUndefined();
+      expect(name).toBe('Updated Name');
+    });
+
+    it('Should fail to update category, category not exists', async () => {
+      const { body } = await request(app.getHttpServer())
+        .post('/graphql')
+        .set('Content-Type', 'application/json')
+        .send({
+          query: updateAdminCategory,
+          variables: {
+            updateAdminCategoryInput: {
+              name: 'update one',
+            },
+            updateAdminCategoryId: new ObjectId().toHexString(),
+          },
         });
 
       const { errors } = body;

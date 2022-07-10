@@ -39,8 +39,19 @@ export class AdminCategoryService {
     return this.categoryModel.findOne({ _id: id, isDeleted: false });
   }
 
-  update(id: number, updateAdminCategoryInput: UpdateAdminCategoryInput) {
-    return `This action updates a #${id} adminCategory`;
+  async update(id: string, updateAdminCategoryInput: UpdateAdminCategoryInput) {
+    const category = await this.categoryModel
+      .findOne({ _id: id, isDeleted: false })
+      .lean();
+    if (!category) {
+      throw new NotFoundException('The category does not exists');
+    }
+
+    return this.categoryModel.findOneAndUpdate(
+      { _id: id },
+      { $set: updateAdminCategoryInput },
+      { new: true, lean: true },
+    );
   }
 
   async remove(id: string) {
