@@ -265,4 +265,78 @@ describe('Admin Post resolvers (e2e)', () => {
       expect(errors[0].message).not.toBeNull();
     });
   });
+
+  describe('Get One Post', () => {
+    let category: Category;
+    beforeEach(async () => {
+      category = await categoryModel.findOne({});
+    });
+
+    afterEach(async () => {
+      await postModel.deleteMany({});
+    });
+
+    it('Should get one post successfully', async () => {
+      const post = await postModel.create({
+        ...generatePost(),
+        category,
+        categoryId: category._id,
+      });
+
+      const deleteAdminPost = `
+      query {
+        getOneAdminPost(id: "${post._id}"){
+          _id
+          address
+          categoryId
+          description
+          imagesUrls
+          mainImageUrl
+          name
+          openHours
+          price
+          userId
+          status
+         }
+        }`;
+
+      const { body } = await request(app.getHttpServer())
+        .post('/graphql')
+        .set('Content-Type', 'application/json')
+        .send({ query: deleteAdminPost });
+
+      expect(body.errors).toBeUndefined();
+      const { _id } = body.data.getOneAdminPost;
+
+      expect(_id.toString()).toBe(post._id.toString());
+    });
+
+    it('Should fail to get one post, post not exists', async () => {
+      const deleteAdminPost = `
+      query {
+        getOneAdminPost(id: "${category._id}"){
+          _id
+          address
+          categoryId
+          description
+          imagesUrls
+          mainImageUrl
+          name
+          openHours
+          price
+          userId
+          status
+         }
+        }`;
+
+      const { body } = await request(app.getHttpServer())
+        .post('/graphql')
+        .set('Content-Type', 'application/json')
+        .send({ query: deleteAdminPost });
+      const { errors } = body;
+
+      expect(errors).toBeDefined();
+      expect(errors[0].message).not.toBeNull();
+    });
+  });
 });
