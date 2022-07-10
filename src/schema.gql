@@ -129,11 +129,11 @@ type Mutation {
   createAdminPost(createAdminPostInput: CreateAdminPostInput!): AdminPost!
   createMarketplaceCategory(createMarketplaceCategoryInput: CreateMarketplaceCategoryInput!): MarketplaceCategory!
   createMarketplacePost(createMarketplacePostInput: CreateMarketplacePostInput!): MarketplacePost!
-  removeAdminCategory(id: Int!): AdminCategory!
+  removeAdminCategory(id: String!): AdminCategory!
   removeAdminPost(id: Int!): AdminPost!
   removeMarketplaceCategory(id: Int!): MarketplaceCategory!
   removeMarketplacePost(id: String!): MarketplacePost!
-  updateAdminCategory(updateAdminCategoryInput: UpdateAdminCategoryInput!): AdminCategory!
+  updateAdminCategory(id: String!, updateAdminCategoryInput: UpdateAdminCategoryInput!): AdminCategory!
   updateAdminPost(updateAdminPostInput: UpdateAdminPostInput!): AdminPost!
   updateMarketplaceCategory(updateMarketplaceCategoryInput: UpdateMarketplaceCategoryInput!): MarketplaceCategory!
   updateMarketplacePost(updateMarketplacePostInput: UpdateMarketplacePostInput!): MarketplacePost!
@@ -148,8 +148,6 @@ type Query {
 }
 
 input UpdateAdminCategoryInput {
-  id: Int!
-
   """This is the name of category"""
   name: String
 }

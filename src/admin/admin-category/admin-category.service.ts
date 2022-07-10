@@ -54,7 +54,17 @@ export class AdminCategoryService {
     );
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} adminCategory`;
+  async remove(id: string) {
+    const deletedCategory = await this.categoryModel.findOneAndUpdate(
+      { _id: id },
+      { $set: { isDeleted: true } },
+      { new: true, lean: true },
+    );
+
+    if (!deletedCategory) {
+      throw new NotFoundException('This category does not exists');
+    }
+
+    return deletedCategory;
   }
 }

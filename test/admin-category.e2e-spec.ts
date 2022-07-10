@@ -32,10 +32,6 @@ describe('Admin Category resolvers (e2e)', () => {
   });
 
   describe('Add Category', () => {
-    afterEach(async () => {
-      await categoryModel.deleteMany({});
-    });
-
     it('Should add category successfully', async () => {
       const createAdminCategory = `
       mutation {
@@ -110,6 +106,69 @@ describe('Admin Category resolvers (e2e)', () => {
     });
   });
 
+  describe('Delete Category', () => {
+    const removeAdminCategory = `
+    mutation RemoveAdminCategory($removeAdminCategoryId: String!) {
+      removeAdminCategory(id: $removeAdminCategoryId) {
+        _id
+        createdAt
+        name
+        updatedAt
+      }
+    }
+    `;
+
+    it('Should delete category successfully', async () => {
+      const category = await categoryModel.create(generateCategory());
+
+      const { body } = await request(app.getHttpServer())
+        .post('/graphql')
+        .set('Content-Type', 'application/json')
+        .send({
+          query: removeAdminCategory,
+          variables: {
+            removeAdminCategoryId: category._id,
+          },
+        });
+
+      expect(body.errors).toBeUndefined();
+
+      const deletedCategory = await categoryModel.findById(category._id);
+      expect(deletedCategory.isDeleted).toBe(true);
+    });
+
+    it('Should fail to delete category, category not exists', async () => {
+      const { body } = await request(app.getHttpServer())
+        .post('/graphql')
+        .set('Content-Type', 'application/json')
+        .send({
+          query: removeAdminCategory,
+          variables: {
+            removeAdminCategoryId: new ObjectId().toHexString(),
+          },
+        });
+
+      const { errors } = body;
+
+      expect(errors).toBeDefined();
+      expect(errors[0].message).not.toBeNull();
+    });
+
+    it('Should fail to delete category, bad request', async () => {
+      const { body } = await request(app.getHttpServer())
+        .post('/graphql')
+        .set('Content-Type', 'application/json')
+        .send({
+          query: removeAdminCategory,
+          variables: {},
+        });
+
+      const { errors } = body;
+
+      expect(errors).toBeDefined();
+      expect(errors[0].message).not.toBeNull();
+    });
+  });
   describe('Update Category', () => {
     afterEach(async () => {
       await categoryModel.deleteMany({});
