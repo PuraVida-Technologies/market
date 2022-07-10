@@ -134,7 +134,6 @@ describe('Admin Category resolvers (e2e)', () => {
       expect(body.errors).toBeUndefined();
 
       const deletedCategory = await categoryModel.findById(category._id);
-
       expect(deletedCategory.isDeleted).toBe(true);
     });
 
