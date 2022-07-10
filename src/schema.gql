@@ -106,8 +106,14 @@ type MarketplaceCategory {
   """This is the category id"""
   _id: String!
 
+  """This is the created at time"""
+  createdAt: String!
+
   """This is the category name"""
   name: String!
+
+  """This is the updated at time"""
+  updatedAt: String!
 }
 
 type MarketplacePost {
