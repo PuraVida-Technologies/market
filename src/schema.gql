@@ -33,6 +33,11 @@ input ApproveOrDeclinePostInput {
   status: String!
 }
 
+input AutoCompleteCategoryInput {
+  """This is the category name or prefix"""
+  name: String!
+}
+
 type Category {
   _id: String!
   createdAt: DateTime!
@@ -47,11 +52,6 @@ input CreateAdminCategoryInput {
 }
 
 input CreateAdminPostInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input CreateMarketplaceCategoryInput {
   """Example field (placeholder)"""
   exampleField: Int!
 }
@@ -103,8 +103,11 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type MarketplaceCategory {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  """This is the category id"""
+  _id: String!
+
+  """This is the category name"""
+  name: String!
 }
 
 type MarketplacePost {
@@ -127,15 +130,12 @@ type Mutation {
   approveOrDeclinePost(approveOrDeclinePostInput: ApproveOrDeclinePostInput!): AdminPost!
   createAdminCategory(createAdminCategoryInput: CreateAdminCategoryInput!): AdminCategory!
   createAdminPost(createAdminPostInput: CreateAdminPostInput!): AdminPost!
-  createMarketplaceCategory(createMarketplaceCategoryInput: CreateMarketplaceCategoryInput!): MarketplaceCategory!
   createMarketplacePost(createMarketplacePostInput: CreateMarketplacePostInput!): MarketplacePost!
   removeAdminCategory(id: String!): AdminCategory!
   removeAdminPost(id: Int!): AdminPost!
-  removeMarketplaceCategory(id: Int!): MarketplaceCategory!
   removeMarketplacePost(id: String!): MarketplacePost!
   updateAdminCategory(id: String!, updateAdminCategoryInput: UpdateAdminCategoryInput!): AdminCategory!
   updateAdminPost(updateAdminPostInput: UpdateAdminPostInput!): AdminPost!
-  updateMarketplaceCategory(updateMarketplaceCategoryInput: UpdateMarketplaceCategoryInput!): MarketplaceCategory!
   updateMarketplacePost(updateMarketplacePostInput: UpdateMarketplacePostInput!): MarketplacePost!
 }
 
@@ -143,6 +143,7 @@ type Query {
   adminCategories: [AdminCategory!]!
   adminCategory(id: String!): AdminCategory!
   adminPost(id: Int!): AdminPost!
+  marketplaceAutoCompleteCategory(autoCompleteCategoryInput: AutoCompleteCategoryInput!): [MarketplaceCategory!]!
   marketplaceCategory(id: Int!): MarketplaceCategory!
   marketplacePost(id: Int!): MarketplacePost!
 }
@@ -153,12 +154,6 @@ input UpdateAdminCategoryInput {
 }
 
 input UpdateAdminPostInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
-}
-
-input UpdateMarketplaceCategoryInput {
   """Example field (placeholder)"""
   exampleField: Int
   id: Int!
