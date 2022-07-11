@@ -19,6 +19,13 @@ export class UserRatePost {
   })
   postId: string;
 
+  @Field(() => String)
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category',
+  })
+  categoryId: string;
+
   @Field()
   @Prop()
   value: number;
