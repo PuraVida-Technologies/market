@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateUserRatePostInput } from './dto/create-user-rate-post.input';
+import { CreateUserRatingPostInput } from './dto/create-user-rate-post.input';
 import { UserRatePost, Post } from '../../models';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -12,7 +12,7 @@ export class UserRatePostService {
     private readonly userRatePostModel: Model<UserRatePost>,
   ) {}
 
-  async create(createUserRatePostInput: CreateUserRatePostInput) {
+  async create(createUserRatePostInput: CreateUserRatingPostInput) {
     const { postId } = createUserRatePostInput;
 
     const post = await this.postModel

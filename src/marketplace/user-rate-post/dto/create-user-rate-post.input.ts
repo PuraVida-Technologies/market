@@ -12,7 +12,7 @@ import {
 } from 'class-validator';
 
 @InputType()
-export class CreateUserRatePostInput {
+export class CreateUserRatingPostInput {
   @Field(() => String, { description: 'This is user id' })
   @IsNotEmpty()
   @IsString()

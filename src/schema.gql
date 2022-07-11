@@ -97,7 +97,7 @@ input CreateMarketplacePostInput {
   userId: String!
 }
 
-input CreateUserRatePostInput {
+input CreateUserRatingPostInput {
   """This is the rate description"""
   description: String
 
@@ -143,7 +143,7 @@ type Mutation {
   createAdminPost(createAdminPostInput: CreateAdminPostInput!): AdminPost!
   createMarketplaceCategory(createMarketplaceCategoryInput: CreateMarketplaceCategoryInput!): MarketplaceCategory!
   createMarketplacePost(createMarketplacePostInput: CreateMarketplacePostInput!): MarketplacePost!
-  createUserRatePost(createUserRatePostInput: CreateUserRatePostInput!): UserRatePost!
+  createUserRatingPost(createUserRatingPostInput: CreateUserRatingPostInput!): UserRatePost!
   removeAdminCategory(id: String!): AdminCategory!
   removeAdminPost(id: Int!): AdminPost!
   removeMarketplaceCategory(id: Int!): MarketplaceCategory!
