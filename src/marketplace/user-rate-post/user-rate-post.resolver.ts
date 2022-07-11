@@ -16,7 +16,7 @@ export class UserRatePostResolver {
   }
 
   @Mutation(() => UserRatePost)
-  removeUserRatePost(@Args('id', { type: () => String }) id: string) {
+  removeUserRatingPost(@Args('id', { type: () => String }) id: string) {
     return this.userRatePostService.remove(id);
   }
 }

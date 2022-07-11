@@ -171,7 +171,7 @@ describe('Marketplace User Rate Post resolvers (e2e)', () => {
 
       const createUserRatePost = `
       mutation {
-        removeUserRatePost(id: "${userRatePost._id.toString()}"){
+        removeUserRatingPost(id: "${userRatePost._id.toString()}"){
           _id
           userId
           value
@@ -186,7 +186,8 @@ describe('Marketplace User Rate Post resolvers (e2e)', () => {
         .send({ query: createUserRatePost });
       expect(body.errors).toBeUndefined();
 
-      const { _id } = body.data.removeUserRatePost;
+      const { _id } = body.data.removeUserRatingPost;
+
       const deletedUserRatePost = await userRatePostModel.findById(_id);
       expect(deletedUserRatePost.isDeleted).toBe(true);
     });
@@ -201,7 +202,7 @@ describe('Marketplace User Rate Post resolvers (e2e)', () => {
 
       const removeUserRatePost = `
       mutation {
-        removeUserRatePost(id: "${post._id.toString()}"}){
+        removeUserRatingPost(id: "${post._id.toString()}"}){
          _id
          userId
          value
