@@ -149,9 +149,10 @@ type Mutation {
 type Query {
   adminCategories: [AdminCategory!]!
   adminCategory(id: String!): AdminCategory!
-  adminPost(id: Int!): AdminPost!
+  adminPost: [AdminPost!]!
   findOne(id: Int!): MarketplacePost!
   getMarketplacePosts(getMarketplacePostsInput: GetAllDto!): [MarketplacePost!]
+  getOneAdminPost(id: String!): AdminPost!
   marketplaceCategory(id: Int!): MarketplaceCategory!
 }
 

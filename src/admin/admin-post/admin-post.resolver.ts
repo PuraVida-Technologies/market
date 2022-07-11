@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { AdminPostService } from './admin-post.service';
 import { AdminPost } from './entities/admin-post.entity';
 import { ApproveOrDeclinePostInput } from './dto/approve-or-decline-post.input';
@@ -20,8 +20,8 @@ export class AdminPostResolver {
     return this.adminPostService.findAll();
   }
 
-  @Query(() => AdminPost, { name: 'adminPost' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  @Query(() => AdminPost, { name: 'getOneAdminPost' })
+  getOneAdminPost(@Args('id', { type: () => String }) id: string) {
     return this.adminPostService.findOne(id);
   }
 

@@ -31,8 +31,16 @@ export class AdminPostService {
     return `This action returns all adminPost`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} adminPost`;
+  async findOne(id: string) {
+    const post = await this.postModel
+      .findOne({ isDeleted: false, _id: id })
+      .lean();
+
+    if (!post) {
+      throw new NotFoundException('This post is not exists');
+    }
+
+    return post;
   }
 
   async remove(id: string) {
