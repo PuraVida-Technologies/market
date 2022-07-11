@@ -148,7 +148,7 @@ type Mutation {
   removeAdminPost(id: Int!): AdminPost!
   removeMarketplaceCategory(id: Int!): MarketplaceCategory!
   removeMarketplacePost(id: String!): MarketplacePost!
-  removeUserRatePost(id: Int!): UserRatePost!
+  removeUserRatePost(id: String!): UserRatePost!
   updateAdminCategory(id: String!, updateAdminCategoryInput: UpdateAdminCategoryInput!): AdminCategory!
   updateAdminPost(updateAdminPostInput: UpdateAdminPostInput!): AdminPost!
   updateMarketplaceCategory(updateMarketplaceCategoryInput: UpdateMarketplaceCategoryInput!): MarketplaceCategory!
