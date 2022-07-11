@@ -43,6 +43,7 @@ export class AdminCategoryService {
     const category = await this.categoryModel
       .findOne({ _id: id, isDeleted: false })
       .lean();
+
     if (!category) {
       throw new NotFoundException('The category does not exists');
     }

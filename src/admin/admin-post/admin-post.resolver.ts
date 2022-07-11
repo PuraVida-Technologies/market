@@ -1,20 +1,11 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { AdminPostService } from './admin-post.service';
 import { AdminPost } from './entities/admin-post.entity';
-import { CreateAdminPostInput } from './dto/create-admin-post.input';
-import { UpdateAdminPostInput } from './dto/update-admin-post.input';
 import { ApproveOrDeclinePostInput } from './dto/approve-or-decline-post.input';
 
 @Resolver(() => AdminPost)
 export class AdminPostResolver {
   constructor(private readonly adminPostService: AdminPostService) {}
-
-  @Mutation(() => AdminPost)
-  createAdminPost(
-    @Args('createAdminPostInput') createAdminPostInput: CreateAdminPostInput,
-  ) {
-    return this.adminPostService.create(createAdminPostInput);
-  }
 
   @Mutation(() => AdminPost)
   approveOrDeclinePost(
@@ -35,17 +26,7 @@ export class AdminPostResolver {
   }
 
   @Mutation(() => AdminPost)
-  updateAdminPost(
-    @Args('updateAdminPostInput') updateAdminPostInput: UpdateAdminPostInput,
-  ) {
-    return this.adminPostService.update(
-      updateAdminPostInput.id,
-      updateAdminPostInput,
-    );
-  }
-
-  @Mutation(() => AdminPost)
-  removeAdminPost(@Args('id', { type: () => Int }) id: number) {
+  removeAdminPost(@Args('id', { type: () => String }) id: string) {
     return this.adminPostService.remove(id);
   }
 }

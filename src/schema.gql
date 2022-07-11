@@ -46,11 +46,6 @@ input CreateAdminCategoryInput {
   name: String!
 }
 
-input CreateAdminPostInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
 input CreateMarketplaceCategoryInput {
   """Example field (placeholder)"""
   exampleField: Int!
@@ -140,15 +135,13 @@ type MarketplacePost {
 type Mutation {
   approveOrDeclinePost(approveOrDeclinePostInput: ApproveOrDeclinePostInput!): AdminPost!
   createAdminCategory(createAdminCategoryInput: CreateAdminCategoryInput!): AdminCategory!
-  createAdminPost(createAdminPostInput: CreateAdminPostInput!): AdminPost!
   createMarketplaceCategory(createMarketplaceCategoryInput: CreateMarketplaceCategoryInput!): MarketplaceCategory!
   createMarketplacePost(createMarketplacePostInput: CreateMarketplacePostInput!): MarketplacePost!
   removeAdminCategory(id: String!): AdminCategory!
-  removeAdminPost(id: Int!): AdminPost!
+  removeAdminPost(id: String!): AdminPost!
   removeMarketplaceCategory(id: Int!): MarketplaceCategory!
   removeMarketplacePost(id: String!): MarketplacePost!
   updateAdminCategory(id: String!, updateAdminCategoryInput: UpdateAdminCategoryInput!): AdminCategory!
-  updateAdminPost(updateAdminPostInput: UpdateAdminPostInput!): AdminPost!
   updateMarketplaceCategory(updateMarketplaceCategoryInput: UpdateMarketplaceCategoryInput!): MarketplaceCategory!
   updateMarketplacePost(updateMarketplacePostInput: UpdateMarketplacePostInput!): MarketplacePost!
 }
@@ -165,12 +158,6 @@ type Query {
 input UpdateAdminCategoryInput {
   """This is the name of category"""
   name: String
-}
-
-input UpdateAdminPostInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
 }
 
 input UpdateMarketplaceCategoryInput {
