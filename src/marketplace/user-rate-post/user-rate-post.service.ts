@@ -29,7 +29,17 @@ export class UserRatePostService {
     });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} userRatePost`;
+  async remove(id: string) {
+    const deletesPostRate = await this.userRatePostModel.findOneAndUpdate(
+      { isDeleted: false, _id: id },
+      { $set: { isDeleted: true } },
+      { new: true, lean: true },
+    );
+
+    if (!deletesPostRate) {
+      throw new NotFoundException('This post rate is not exist');
+    }
+
+    return deletesPostRate;
   }
 }
