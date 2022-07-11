@@ -92,6 +92,20 @@ input CreateMarketplacePostInput {
   userId: String!
 }
 
+input CreateUserRatingPostInput {
+  """This is the rate description"""
+  description: String
+
+  """This is post id"""
+  postId: String!
+
+  """This is user id"""
+  userId: String!
+
+  """This is rate value"""
+  value: Float!
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -145,9 +159,11 @@ type Mutation {
   approveOrDeclinePost(approveOrDeclinePostInput: ApproveOrDeclinePostInput!): AdminPost!
   createAdminCategory(createAdminCategoryInput: CreateAdminCategoryInput!): AdminCategory!
   createMarketplacePost(createMarketplacePostInput: CreateMarketplacePostInput!): MarketplacePost!
+  createUserRatingPost(createUserRatingPostInput: CreateUserRatingPostInput!): UserRatePost!
   removeAdminCategory(id: String!): AdminCategory!
   removeAdminPost(id: String!): AdminPost!
   removeMarketplacePost(id: String!): MarketplacePost!
+  removeUserRatePost(id: Int!): UserRatePost!
   updateAdminCategory(id: String!, updateAdminCategoryInput: UpdateAdminCategoryInput!): AdminCategory!
   updateMarketplacePost(updateMarketplacePostInput: UpdateMarketplacePostInput!): MarketplacePost!
 }
@@ -210,4 +226,24 @@ input UpdateMarketplacePostInput {
 
   """This is the Owner Id"""
   userId: String
+}
+
+type UserRatePost {
+  """This is user rate for post  id"""
+  _id: String!
+
+  """This is the created time for post """
+  createdAt: String!
+
+  """This is post id"""
+  postId: String!
+
+  """This is the updated time for post """
+  updatedAt: String!
+
+  """This is user id"""
+  userId: String!
+
+  """This is post rate value"""
+  value: Float!
 }
