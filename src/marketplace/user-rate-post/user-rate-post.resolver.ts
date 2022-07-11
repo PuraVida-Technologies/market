@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Mutation, Args } from '@nestjs/graphql';
 import { UserRatePostService } from './user-rate-post.service';
 import { UserRatePost } from './entities/user-rate-post.entity';
 import { CreateUserRatingPostInput } from './dto/create-user-rate-post.input';
