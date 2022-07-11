@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Mutation, Args } from '@nestjs/graphql';
 import { UserRatePostService } from './user-rate-post.service';
 import { UserRatePost } from './entities/user-rate-post.entity';
 import { CreateUserRatePostInput } from './dto/create-user-rate-post.input';
@@ -16,7 +16,7 @@ export class UserRatePostResolver {
   }
 
   @Mutation(() => UserRatePost)
-  removeUserRatePost(@Args('id', { type: () => Int }) id: number) {
+  removeUserRatePost(@Args('id', { type: () => String }) id: string) {
     return this.userRatePostService.remove(id);
   }
 }
