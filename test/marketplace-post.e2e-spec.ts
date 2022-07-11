@@ -438,4 +438,86 @@ describe('Marketplace Post resolvers (e2e)', () => {
       expect(errors[0].message).not.toBeNull();
     });
   });
+
+  describe('Get Post', () => {
+    afterEach(async () => {
+      await postModel.deleteMany({});
+    });
+
+    it('Should get 10 posts successfully', async () => {
+      const category = await categoryModel.findOne({}).lean();
+
+      const posts = [];
+
+      for (let index = 0; index < 15; index++) {
+        posts.push({ ...generatePost(), categoryId: category._id, category });
+      }
+
+      await postModel.insertMany(posts);
+
+      const getMarketplacePosts = `
+      query {
+        getMarketplacePosts(getMarketplacePostsInput: {}){
+          _id
+          address
+          categoryId
+          description
+          imagesUrls
+          mainImageUrl
+          name
+          openHours
+          price
+          userId
+          }
+        }`;
+
+      const { body } = await request(app.getHttpServer())
+        .post('/graphql')
+        .set('Content-Type', 'application/json')
+        .send({ query: getMarketplacePosts });
+
+      const { getMarketplacePosts: postsData } = body.data;
+
+      expect(body.errors).toBeUndefined();
+      expect(postsData.length).toBe(10);
+    });
+
+    it('Should fail to get posts, bad request', async () => {
+      const category = await categoryModel.findOne({}).lean();
+
+      const posts = [];
+
+      for (let index = 0; index < 15; index++) {
+        posts.push({ ...generatePost(), categoryId: category._id, category });
+      }
+
+      await postModel.insertMany(posts);
+
+      const getMarketplacePosts = `
+      query {
+        getMarketplacePosts(getMarketplacePostsInput: {sortBy: 1}){
+          _id
+          address
+          categoryId
+          description
+          imagesUrls
+          mainImageUrl
+          name
+          openHours
+          price
+          userId
+          }
+        }`;
+
+      const { body } = await request(app.getHttpServer())
+        .post('/graphql')
+        .set('Content-Type', 'application/json')
+        .send({ query: getMarketplacePosts });
+
+      const { errors } = body;
+
+      expect(errors).toBeDefined();
+      expect(errors[0].message).not.toBeNull();
+    });
+  });
 });

@@ -3,6 +3,7 @@ import { MarketplacePostService } from './marketplace-post.service';
 import { MarketplacePost } from './entities/marketplace-post.entity';
 import { CreateMarketplacePostInput } from './dto/create-marketplace-post.input';
 import { UpdateMarketplacePostInput } from './dto/update-marketplace-post.input';
+import { GetAllDto } from '../../common/inputs/get-all.input';
 
 @Resolver(() => MarketplacePost)
 export class MarketplacePostResolver {
@@ -18,12 +19,15 @@ export class MarketplacePostResolver {
     return this.marketplacePostService.create(createMarketplacePostInput);
   }
 
-  @Query(() => [MarketplacePost], { name: 'marketplacePost' })
-  findAll() {
-    return this.marketplacePostService.findAll();
+  @Query(() => [MarketplacePost], { nullable: true })
+  getMarketplacePosts(
+    @Args('getMarketplacePostsInput')
+    getMarketplacePostsInput?: GetAllDto,
+  ) {
+    return this.marketplacePostService.findAll(getMarketplacePostsInput);
   }
 
-  @Query(() => MarketplacePost, { name: 'marketplacePost' })
+  @Query(() => MarketplacePost)
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.marketplacePostService.findOne(id);
   }
