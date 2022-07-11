@@ -1,16 +1,16 @@
-import { Resolver, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, Int } from '@nestjs/graphql';
 import { UserRatePostService } from './user-rate-post.service';
 import { UserRatePost } from './entities/user-rate-post.entity';
-import { CreateUserRatePostInput } from './dto/create-user-rate-post.input';
+import { CreateUserRatingPostInput } from './dto/create-user-rate-post.input';
 
 @Resolver(() => UserRatePost)
 export class UserRatePostResolver {
   constructor(private readonly userRatePostService: UserRatePostService) {}
 
   @Mutation(() => UserRatePost)
-  createUserRatePost(
-    @Args('createUserRatePostInput')
-    createUserRatePostInput: CreateUserRatePostInput,
+  createUserRatingPost(
+    @Args('createUserRatingPostInput')
+    createUserRatePostInput: CreateUserRatingPostInput,
   ) {
     return this.userRatePostService.create(createUserRatePostInput);
   }

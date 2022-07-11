@@ -33,6 +33,11 @@ input ApproveOrDeclinePostInput {
   status: String!
 }
 
+input AutoCompleteCategoryInput {
+  """This is the category name or prefix"""
+  name: String!
+}
+
 type Category {
   _id: String!
   createdAt: DateTime!
@@ -44,16 +49,6 @@ type Category {
 input CreateAdminCategoryInput {
   """This is the name of category"""
   name: String!
-}
-
-input CreateAdminPostInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input CreateMarketplaceCategoryInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
 }
 
 input CreateMarketplacePostInput {
@@ -97,7 +92,7 @@ input CreateMarketplacePostInput {
   userId: String!
 }
 
-input CreateUserRatePostInput {
+input CreateUserRatingPostInput {
   """This is the rate description"""
   description: String
 
@@ -116,9 +111,32 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+input GetAllDto {
+  """This is limit number"""
+  limit: Float = 10
+
+  """This is the field sort by it"""
+  order: String = "asc"
+
+  """This is the page number"""
+  page: Float = 1
+
+  """This is the field sort by it"""
+  sortBy: String = "createdAt"
+}
+
 type MarketplaceCategory {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  """This is the category id"""
+  _id: String!
+
+  """This is the created at time"""
+  createdAt: String!
+
+  """This is the category name"""
+  name: String!
+
+  """This is the updated at time"""
+  updatedAt: String!
 }
 
 type MarketplacePost {
@@ -140,44 +158,30 @@ type MarketplacePost {
 type Mutation {
   approveOrDeclinePost(approveOrDeclinePostInput: ApproveOrDeclinePostInput!): AdminPost!
   createAdminCategory(createAdminCategoryInput: CreateAdminCategoryInput!): AdminCategory!
-  createAdminPost(createAdminPostInput: CreateAdminPostInput!): AdminPost!
-  createMarketplaceCategory(createMarketplaceCategoryInput: CreateMarketplaceCategoryInput!): MarketplaceCategory!
   createMarketplacePost(createMarketplacePostInput: CreateMarketplacePostInput!): MarketplacePost!
-  createUserRatePost(createUserRatePostInput: CreateUserRatePostInput!): UserRatePost!
+  createUserRatingPost(createUserRatingPostInput: CreateUserRatingPostInput!): UserRatePost!
   removeAdminCategory(id: String!): AdminCategory!
-  removeAdminPost(id: Int!): AdminPost!
-  removeMarketplaceCategory(id: Int!): MarketplaceCategory!
+  removeAdminPost(id: String!): AdminPost!
   removeMarketplacePost(id: String!): MarketplacePost!
   removeUserRatePost(id: String!): UserRatePost!
   updateAdminCategory(id: String!, updateAdminCategoryInput: UpdateAdminCategoryInput!): AdminCategory!
-  updateAdminPost(updateAdminPostInput: UpdateAdminPostInput!): AdminPost!
-  updateMarketplaceCategory(updateMarketplaceCategoryInput: UpdateMarketplaceCategoryInput!): MarketplaceCategory!
   updateMarketplacePost(updateMarketplacePostInput: UpdateMarketplacePostInput!): MarketplacePost!
 }
 
 type Query {
   adminCategories: [AdminCategory!]!
   adminCategory(id: String!): AdminCategory!
-  adminPost(id: Int!): AdminPost!
+  adminPost: [AdminPost!]!
+  findOne(id: Int!): MarketplacePost!
+  getMarketplacePosts(getMarketplacePostsInput: GetAllDto!): [MarketplacePost!]
+  getOneAdminPost(id: String!): AdminPost!
+  marketplaceAutoCompleteCategory(autoCompleteCategoryInput: AutoCompleteCategoryInput!): [MarketplaceCategory!]!
   marketplaceCategory(id: Int!): MarketplaceCategory!
-  marketplacePost(id: Int!): MarketplacePost!
 }
 
 input UpdateAdminCategoryInput {
   """This is the name of category"""
   name: String
-}
-
-input UpdateAdminPostInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
-}
-
-input UpdateMarketplaceCategoryInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
 }
 
 input UpdateMarketplacePostInput {

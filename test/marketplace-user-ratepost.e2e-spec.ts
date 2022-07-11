@@ -60,7 +60,7 @@ describe('Marketplace User Rate Post resolvers (e2e)', () => {
 
       const createUserRatePost = `
       mutation {
-        createUserRatePost(createUserRatePostInput:{
+        createUserRatingPost(createUserRatingPostInput:{
           description: "This is Test description"
           postId: "${post._id.toString()}" 
           userId: "${post._id.toString()}" 
@@ -81,7 +81,7 @@ describe('Marketplace User Rate Post resolvers (e2e)', () => {
 
       expect(body.errors).toBeUndefined();
 
-      const { value } = body.data.createUserRatePost;
+      const { value } = body.data.createUserRatingPost;
       expect(value).toBe(1.5);
     });
 
@@ -95,7 +95,7 @@ describe('Marketplace User Rate Post resolvers (e2e)', () => {
 
       const createUserRatePost = `
       mutation {
-        createUserRatePost(createUserRatePostInput:{
+        createUserRatingPost(createUserRatingPostInput:{
           description: "This is Test description"
           postId: "${post._id.toString()}"           
           value: "1.5"        
@@ -125,7 +125,7 @@ describe('Marketplace User Rate Post resolvers (e2e)', () => {
 
       const createUserRatePost = `
       mutation {
-        createUserRatePost(createUserRatePostInput:{
+        createUserRatingPost(createUserRatingPostInput:{
           description: "This is Test description"
           postId: "${category._id.toString()}" 
           userId: "${category._id.toString()}" 

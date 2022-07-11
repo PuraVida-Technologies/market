@@ -1,12 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { CreateMarketplaceCategoryInput } from './dto/create-marketplace-category.input';
-import { UpdateMarketplaceCategoryInput } from './dto/update-marketplace-category.input';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { CATEGORY_NAMES_INDEX } from '../../common/constants';
+import { mongoTextSearch } from '../../common/helpers';
+import { Category } from '../../models';
+import { AutoCompleteCategoryInput } from './dto/auto-complete.input';
 
 @Injectable()
 export class MarketplaceCategoryService {
-  create(createMarketplaceCategoryInput: CreateMarketplaceCategoryInput) {
-    return 'This action adds a new marketplaceCategory';
-  }
+  constructor(
+    @InjectModel(Category.name) private readonly categoryModel: Model<Category>,
+  ) {}
 
   findAll() {
     return `This action returns all marketplaceCategory`;
@@ -16,14 +20,18 @@ export class MarketplaceCategoryService {
     return `This action returns a #${id} marketplaceCategory`;
   }
 
-  update(
-    id: number,
-    updateMarketplaceCategoryInput: UpdateMarketplaceCategoryInput,
-  ) {
-    return `This action updates a #${id} marketplaceCategory`;
-  }
+  async autoComplete(autoCompleteCategoryInput: AutoCompleteCategoryInput) {
+    const { name } = autoCompleteCategoryInput;
 
-  remove(id: number) {
-    return `This action removes a #${id} marketplaceCategory`;
+    const categories = await this.categoryModel.aggregate([
+      ...mongoTextSearch({
+        field: 'name',
+        index: CATEGORY_NAMES_INDEX,
+        query: name,
+      }),
+      { $limit: 10 },
+    ]);
+
+    return categories;
   }
 }
