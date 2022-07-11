@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { AdminCategoryService } from './admin-category.service';
 import { AdminCategory } from './entities/admin-category.entity';
 import { CreateAdminCategoryInput } from './dto/create-admin-category.input';

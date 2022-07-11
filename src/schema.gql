@@ -51,11 +51,6 @@ input CreateAdminCategoryInput {
   name: String!
 }
 
-input CreateAdminPostInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
 input CreateMarketplacePostInput {
   """This is the address"""
   address: String!
@@ -102,6 +97,20 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+input GetAllDto {
+  """This is limit number"""
+  limit: Float = 10
+
+  """This is the field sort by it"""
+  order: String = "asc"
+
+  """This is the page number"""
+  page: Float = 1
+
+  """This is the field sort by it"""
+  sortBy: String = "createdAt"
+}
+
 type MarketplaceCategory {
   """This is the category id"""
   _id: String!
@@ -135,34 +144,28 @@ type MarketplacePost {
 type Mutation {
   approveOrDeclinePost(approveOrDeclinePostInput: ApproveOrDeclinePostInput!): AdminPost!
   createAdminCategory(createAdminCategoryInput: CreateAdminCategoryInput!): AdminCategory!
-  createAdminPost(createAdminPostInput: CreateAdminPostInput!): AdminPost!
   createMarketplacePost(createMarketplacePostInput: CreateMarketplacePostInput!): MarketplacePost!
   removeAdminCategory(id: String!): AdminCategory!
-  removeAdminPost(id: Int!): AdminPost!
+  removeAdminPost(id: String!): AdminPost!
   removeMarketplacePost(id: String!): MarketplacePost!
   updateAdminCategory(id: String!, updateAdminCategoryInput: UpdateAdminCategoryInput!): AdminCategory!
-  updateAdminPost(updateAdminPostInput: UpdateAdminPostInput!): AdminPost!
   updateMarketplacePost(updateMarketplacePostInput: UpdateMarketplacePostInput!): MarketplacePost!
 }
 
 type Query {
   adminCategories: [AdminCategory!]!
   adminCategory(id: String!): AdminCategory!
-  adminPost(id: Int!): AdminPost!
+  adminPost: [AdminPost!]!
+  findOne(id: Int!): MarketplacePost!
+  getMarketplacePosts(getMarketplacePostsInput: GetAllDto!): [MarketplacePost!]
+  getOneAdminPost(id: String!): AdminPost!
   marketplaceAutoCompleteCategory(autoCompleteCategoryInput: AutoCompleteCategoryInput!): [MarketplaceCategory!]!
   marketplaceCategory(id: Int!): MarketplaceCategory!
-  marketplacePost(id: Int!): MarketplacePost!
 }
 
 input UpdateAdminCategoryInput {
   """This is the name of category"""
   name: String
-}
-
-input UpdateAdminPostInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
 }
 
 input UpdateMarketplacePostInput {
