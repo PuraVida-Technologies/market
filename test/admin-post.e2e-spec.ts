@@ -200,7 +200,7 @@ describe('Admin Post resolvers (e2e)', () => {
       await postModel.deleteMany({});
     });
 
-    it('Should Approve post successfully', async () => {
+    it('Should delete post successfully', async () => {
       const post = await postModel.create({
         ...generatePost(),
         category,
@@ -237,7 +237,7 @@ describe('Admin Post resolvers (e2e)', () => {
       expect(deletedPost.isDeleted).toBe(true);
     });
 
-    it('Should Approve post successfully', async () => {
+    it('Should fail to post, post not exists', async () => {
       const deleteAdminPost = `
       mutation {
         removeAdminPost(id: "${category._id}"){
