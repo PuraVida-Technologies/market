@@ -33,6 +33,11 @@ input ApproveOrDeclinePostInput {
   status: String!
 }
 
+input AutoCompleteCategoryInput {
+  """This is the category name or prefix"""
+  name: String!
+}
+
 type Category {
   _id: String!
   createdAt: DateTime!
@@ -44,11 +49,6 @@ type Category {
 input CreateAdminCategoryInput {
   """This is the name of category"""
   name: String!
-}
-
-input CreateMarketplaceCategoryInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
 }
 
 input CreateMarketplacePostInput {
@@ -112,8 +112,17 @@ input GetAllDto {
 }
 
 type MarketplaceCategory {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  """This is the category id"""
+  _id: String!
+
+  """This is the created at time"""
+  createdAt: String!
+
+  """This is the category name"""
+  name: String!
+
+  """This is the updated at time"""
+  updatedAt: String!
 }
 
 type MarketplacePost {
@@ -135,14 +144,11 @@ type MarketplacePost {
 type Mutation {
   approveOrDeclinePost(approveOrDeclinePostInput: ApproveOrDeclinePostInput!): AdminPost!
   createAdminCategory(createAdminCategoryInput: CreateAdminCategoryInput!): AdminCategory!
-  createMarketplaceCategory(createMarketplaceCategoryInput: CreateMarketplaceCategoryInput!): MarketplaceCategory!
   createMarketplacePost(createMarketplacePostInput: CreateMarketplacePostInput!): MarketplacePost!
   removeAdminCategory(id: String!): AdminCategory!
   removeAdminPost(id: String!): AdminPost!
-  removeMarketplaceCategory(id: Int!): MarketplaceCategory!
   removeMarketplacePost(id: String!): MarketplacePost!
   updateAdminCategory(id: String!, updateAdminCategoryInput: UpdateAdminCategoryInput!): AdminCategory!
-  updateMarketplaceCategory(updateMarketplaceCategoryInput: UpdateMarketplaceCategoryInput!): MarketplaceCategory!
   updateMarketplacePost(updateMarketplacePostInput: UpdateMarketplacePostInput!): MarketplacePost!
 }
 
@@ -153,18 +159,13 @@ type Query {
   findOne(id: Int!): MarketplacePost!
   getMarketplacePosts(getMarketplacePostsInput: GetAllDto!): [MarketplacePost!]
   getOneAdminPost(id: String!): AdminPost!
+  marketplaceAutoCompleteCategory(autoCompleteCategoryInput: AutoCompleteCategoryInput!): [MarketplaceCategory!]!
   marketplaceCategory(id: Int!): MarketplaceCategory!
 }
 
 input UpdateAdminCategoryInput {
   """This is the name of category"""
   name: String
-}
-
-input UpdateMarketplaceCategoryInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
 }
 
 input UpdateMarketplacePostInput {
