@@ -8,7 +8,7 @@ import { Category } from '../../models';
 import { Model } from 'mongoose';
 import { CreateAdminCategoryInput } from './dto/create-admin-category.input';
 import { UpdateAdminCategoryInput } from './dto/update-admin-category.input';
-import { GetAllDto } from 'src/common/inputs/get-all.input';
+import { GetAllDto } from '../../common/inputs/get-all.input';
 
 @Injectable()
 export class AdminCategoryService {

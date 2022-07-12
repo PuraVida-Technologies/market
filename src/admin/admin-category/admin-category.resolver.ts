@@ -3,7 +3,7 @@ import { AdminCategoryService } from './admin-category.service';
 import { AdminCategory } from './entities/admin-category.entity';
 import { CreateAdminCategoryInput } from './dto/create-admin-category.input';
 import { UpdateAdminCategoryInput } from './dto/update-admin-category.input';
-import { GetAllDto } from 'src/common/inputs/get-all.input';
+import { GetAllDto } from '../../common/inputs/get-all.input';
 
 @Resolver(() => AdminCategory)
 export class AdminCategoryResolver {
