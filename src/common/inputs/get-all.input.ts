@@ -8,7 +8,7 @@ export enum Order {
   descending = 'descending',
 }
 
-@InputType()
+@InputType('GetAllInput')
 export class GetAllDto {
   @Field(() => Number, {
     description: 'This is the page number',

@@ -3,6 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { Model } from 'mongoose';
 import { getModelToken } from '@nestjs/mongoose';
+import { ObjectId } from 'bson';
 
 import { POST_STATUS } from '../src/common/constants';
 import { setupTestApp } from '../test/resources/app-test.module';
@@ -276,6 +277,26 @@ describe('Admin Post resolvers (e2e)', () => {
       await postModel.deleteMany({});
     });
 
+    const getAdminPost = `
+    query GetAdminPost($getAdminPostId: String!) {
+      getAdminPost(id: $getAdminPostId) {
+        _id
+        address
+        categoryId
+        createdAt
+        description
+        imagesUrls
+        mainImageUrl
+        name
+        openHours
+        price
+        status
+        updatedAt
+        userId
+      }
+    }
+    `;
+
     it('Should get one post successfully', async () => {
       const post = await postModel.create({
         ...generatePost(),
@@ -283,56 +304,114 @@ describe('Admin Post resolvers (e2e)', () => {
         categoryId: category._id,
       });
 
-      const deleteAdminPost = `
-      query {
-        getOneAdminPost(id: "${post._id}"){
-          _id
-          address
-          categoryId
-          description
-          imagesUrls
-          mainImageUrl
-          name
-          openHours
-          price
-          userId
-          status
-         }
-        }`;
-
       const { body } = await request(app.getHttpServer())
         .post('/graphql')
         .set('Content-Type', 'application/json')
-        .send({ query: deleteAdminPost });
+        .send({
+          query: getAdminPost,
+          variables: {
+            getAdminPostId: post._id,
+          },
+        });
 
       expect(body.errors).toBeUndefined();
-      const { _id } = body.data.getOneAdminPost;
+      const { _id } = body.data.getAdminPost;
 
       expect(_id.toString()).toBe(post._id.toString());
     });
 
     it('Should fail to get one post, post not exists', async () => {
-      const deleteAdminPost = `
-      query {
-        getOneAdminPost(id: "${category._id}"){
-          _id
-          address
-          categoryId
-          description
-          imagesUrls
-          mainImageUrl
-          name
-          openHours
-          price
-          userId
-          status
-         }
-        }`;
+      const { body } = await request(app.getHttpServer())
+        .post('/graphql')
+        .set('Content-Type', 'application/json')
+        .send({
+          query: getAdminPost,
+          variables: {
+            getAdminPostId: new ObjectId().toHexString(),
+          },
+        });
+      const { errors } = body;
+
+      expect(errors).toBeDefined();
+      expect(errors[0].message).not.toBeNull();
+    });
+  });
+
+  describe('Get Posts', () => {
+    afterEach(async () => {
+      await postModel.deleteMany({});
+    });
+
+    const getMarketplacePosts = `
+    query GetAdminPosts($getAdminPostsInput: GetAllInput!) {
+      getAdminPosts(getAdminPostsInput: $getAdminPostsInput) {
+        _id
+        address
+        categoryId
+        createdAt
+        description
+        imagesUrls
+        mainImageUrl
+        name
+        openHours
+        price
+        status
+        updatedAt
+        userId
+      }
+    }
+    `;
+
+    it('Should get 10 posts successfully', async () => {
+      const category = await categoryModel.findOne({}).lean();
+
+      const posts = [];
+
+      for (let index = 0; index < 15; index++) {
+        posts.push({ ...generatePost(), categoryId: category._id, category });
+      }
+
+      await postModel.insertMany(posts);
 
       const { body } = await request(app.getHttpServer())
         .post('/graphql')
         .set('Content-Type', 'application/json')
-        .send({ query: deleteAdminPost });
+        .send({
+          query: getMarketplacePosts,
+          variables: {
+            getAdminPostsInput: {
+              limit: 10,
+            },
+          },
+        });
+
+      const { getMarketplacePosts: postsData } = body.data;
+
+      expect(body.errors).toBeUndefined();
+      expect(postsData.length).toBe(10);
+    });
+
+    it('Should fail to get posts, bad request', async () => {
+      const category = await categoryModel.findOne({}).lean();
+
+      const posts = [];
+
+      for (let index = 0; index < 15; index++) {
+        posts.push({ ...generatePost(), categoryId: category._id, category });
+      }
+
+      await postModel.insertMany(posts);
+
+      const { body } = await request(app.getHttpServer())
+        .post('/graphql')
+        .set('Content-Type', 'application/json')
+        .send({
+          query: getMarketplacePosts,
+          variables: {
+            sortBy: 1,
+          },
+        });
+
       const { errors } = body;
 
       expect(errors).toBeDefined();
