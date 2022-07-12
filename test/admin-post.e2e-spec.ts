@@ -342,7 +342,7 @@ describe('Admin Post resolvers (e2e)', () => {
       await postModel.deleteMany({});
     });
 
-    const getMarketplacePosts = `
+    const getAdminPosts = `
     query GetAdminPosts($getAdminPostsInput: GetAllInput!) {
       getAdminPosts(getAdminPostsInput: $getAdminPostsInput) {
         _id
@@ -377,7 +377,7 @@ describe('Admin Post resolvers (e2e)', () => {
         .post('/graphql')
         .set('Content-Type', 'application/json')
         .send({
-          query: getMarketplacePosts,
+          query: getAdminPosts,
           variables: {
             getAdminPostsInput: {
               limit: 10,
@@ -385,7 +385,7 @@ describe('Admin Post resolvers (e2e)', () => {
           },
         });
 
-      const { getMarketplacePosts: postsData } = body.data;
+      const { getAdminPosts: postsData } = body.data;
 
       expect(body.errors).toBeUndefined();
       expect(postsData.length).toBe(10);
@@ -406,7 +406,7 @@ describe('Admin Post resolvers (e2e)', () => {
         .post('/graphql')
         .set('Content-Type', 'application/json')
         .send({
-          query: getMarketplacePosts,
+          query: getAdminPosts,
           variables: {
             sortBy: 1,
           },
