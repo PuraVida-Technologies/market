@@ -40,4 +40,7 @@ export class MarketplacePost {
 
   @Field(() => Date)
   updatedAt: Date;
+
+  @Field(() => Number, { nullable: true })
+  rating: number;
 }

@@ -4,6 +4,7 @@ import { MarketplacePost } from './entities/marketplace-post.entity';
 import { CreateMarketplacePostInput } from './dto/create-marketplace-post.input';
 import { UpdateMarketplacePostInput } from './dto/update-marketplace-post.input';
 import { GetAllDto } from '../../common/inputs/get-all.input';
+import { FilterMarketplacePostsInput } from './dto/filter-marketplace-posts.input';
 
 @Resolver(() => MarketplacePost)
 export class MarketplacePostResolver {
@@ -43,5 +44,12 @@ export class MarketplacePostResolver {
   @Mutation(() => MarketplacePost)
   removeMarketplacePost(@Args('id', { type: () => String }) id: string) {
     return this.marketplacePostService.remove(id);
+  }
+
+  @Query(() => [MarketplacePost], { name: 'filterMarketplacePosts' })
+  filerPosts(
+    @Args('filterPostsInput') filterPostsInput: FilterMarketplacePostsInput,
+  ) {
+    return this.marketplacePostService.filterPosts(filterPostsInput);
   }
 }

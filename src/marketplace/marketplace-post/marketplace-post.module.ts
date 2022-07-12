@@ -2,7 +2,14 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MarketplacePostService } from './marketplace-post.service';
 import { MarketplacePostResolver } from './marketplace-post.resolver';
-import { Category, CategorySchema, Post, PostSchema } from '../../models';
+import {
+  Category,
+  CategorySchema,
+  Post,
+  PostSchema,
+  UserRatePost,
+  UserRatePostSchema,
+} from '../../models';
 
 @Module({
   imports: [
@@ -14,6 +21,10 @@ import { Category, CategorySchema, Post, PostSchema } from '../../models';
       {
         name: Post.name,
         schema: PostSchema,
+      },
+      {
+        name: UserRatePost.name,
+        schema: UserRatePostSchema,
       },
     ]),
   ],

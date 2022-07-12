@@ -111,12 +111,41 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+input FilterMarketplacePostsInput {
+  """This is the category id"""
+  categoryId: String!
+
+  """This is the latitude"""
+  latitude: Float
+
+  """This is limit number"""
+  limit: Float = 10
+
+  """This is the longitude"""
+  longitude: Float
+
+  """This is the max distance will search in"""
+  maxDistance: Float = 5000
+
+  """This is the min distance will search in"""
+  minDistance: Float = 0
+
+  """This is the field sort by it"""
+  order: String = "desc"
+
+  """This is the page number"""
+  page: Float = 1
+
+  """This is the field sort by it"""
+  sortBy: String = "createdAt"
+}
+
 input GetAllDto {
   """This is limit number"""
   limit: Float = 10
 
   """This is the field sort by it"""
-  order: String = "asc"
+  order: String = "desc"
 
   """This is the page number"""
   page: Float = 1
@@ -150,6 +179,7 @@ type MarketplacePost {
   name: String!
   openHours: String!
   price: Float!
+  rating: Float
   status: String!
   updatedAt: DateTime!
   userId: String!
@@ -172,6 +202,7 @@ type Query {
   adminCategories: [AdminCategory!]!
   adminCategory(id: String!): AdminCategory!
   adminPost: [AdminPost!]!
+  filterMarketplacePosts(filterPostsInput: FilterMarketplacePostsInput!): [MarketplacePost!]!
   findOne(id: Int!): MarketplacePost!
   getMarketplacePosts(getMarketplacePostsInput: GetAllDto!): [MarketplacePost!]
   getOneAdminPost(id: String!): AdminPost!
