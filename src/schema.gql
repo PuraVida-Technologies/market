@@ -131,7 +131,7 @@ input FilterMarketplacePostsInput {
   minDistance: Float = 0
 
   """This is the field sort by it"""
-  order: String = "asc"
+  order: String = "desc"
 
   """This is the page number"""
   page: Float = 1
@@ -145,7 +145,7 @@ input GetAllDto {
   limit: Float = 10
 
   """This is the field sort by it"""
-  order: String = "asc"
+  order: String = "desc"
 
   """This is the page number"""
   page: Float = 1

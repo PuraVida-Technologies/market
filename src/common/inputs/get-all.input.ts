@@ -39,11 +39,11 @@ export class GetAllDto {
 
   @Field(() => String, {
     description: 'This is the field sort by it',
-    defaultValue: 'asc',
+    defaultValue: 'desc',
     nullable: true,
   })
   @IsOptional()
   @IsEnum(Order)
   @IsString()
-  order?: any = 'asc';
+  order?: any = 'desc';
 }
