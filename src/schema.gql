@@ -140,7 +140,7 @@ input FilterMarketplacePostsInput {
   sortBy: String = "createdAt"
 }
 
-input GetAllDto {
+input GetAllInput {
   """This is limit number"""
   limit: Float = 10
 
@@ -199,13 +199,13 @@ type Mutation {
 }
 
 type Query {
-  adminPost: [AdminPost!]!
   filterMarketplacePosts(filterPostsInput: FilterMarketplacePostsInput!): [MarketplacePost!]!
   findOne(id: Int!): MarketplacePost!
-  getAdminCategories(getAdminCategoriesInput: GetAllDto!): [AdminCategory!]!
+  getAdminCategories(getAdminCategoriesInput: GetAllInput!): [AdminCategory!]!
   getAdminCategory(id: String!): AdminCategory!
-  getMarketplacePosts(getMarketplacePostsInput: GetAllDto!): [MarketplacePost!]
-  getOneAdminPost(id: String!): AdminPost!
+  getAdminPost(id: String!): AdminPost!
+  getAdminPosts(getAdminPostsInput: GetAllInput!): [AdminPost!]!
+  getMarketplacePosts(getMarketplacePostsInput: GetAllInput!): [MarketplacePost!]
   marketplaceAutoCompleteCategory(autoCompleteCategoryInput: AutoCompleteCategoryInput!): [MarketplaceCategory!]!
   marketplaceCategory(id: Int!): MarketplaceCategory!
 }

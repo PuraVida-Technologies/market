@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { GetAllDto } from '../../common/inputs/get-all.input';
 import { Category, Post } from '../../models';
 import { ApproveOrDeclinePostInput } from './dto/approve-or-decline-post.input';
 
@@ -27,8 +28,14 @@ export class AdminPostService {
     return post;
   }
 
-  findAll() {
-    return `This action returns all adminPost`;
+  findAll(getAdminPostInput: GetAllDto) {
+    const { limit, order, page, sortBy } = getAdminPostInput;
+    return this.postModel
+      .find({ isDeleted: false })
+      .sort({ [sortBy]: order })
+      .skip(page * limit - limit)
+      .limit(limit)
+      .lean();
   }
 
   async findOne(id: string) {

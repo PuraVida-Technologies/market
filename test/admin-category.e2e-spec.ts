@@ -235,7 +235,7 @@ describe('Admin Category resolvers (e2e)', () => {
     });
 
     const getAdminCategories = `
-    query GetAdminCategories($getAdminCategoriesInput: GetAllDto!) {
+    query GetAdminCategories($getAdminCategoriesInput: GetAllInput!) {
       getAdminCategories(getAdminCategoriesInput: $getAdminCategoriesInput) {
         _id
         createdAt
