@@ -3,6 +3,7 @@ import { AdminCategoryService } from './admin-category.service';
 import { AdminCategory } from './entities/admin-category.entity';
 import { CreateAdminCategoryInput } from './dto/create-admin-category.input';
 import { UpdateAdminCategoryInput } from './dto/update-admin-category.input';
+import { GetAllDto } from '../../common/inputs/get-all.input';
 
 @Resolver(() => AdminCategory)
 export class AdminCategoryResolver {
@@ -16,12 +17,15 @@ export class AdminCategoryResolver {
     return this.adminCategoryService.create(createAdminCategoryInput);
   }
 
-  @Query(() => [AdminCategory], { name: 'adminCategories' })
-  findAll() {
-    return this.adminCategoryService.findAll();
+  @Query(() => [AdminCategory])
+  getAdminCategories(
+    @Args('getAdminCategoriesInput')
+    getAdminCategoriesInput?: GetAllDto,
+  ) {
+    return this.adminCategoryService.findAll(getAdminCategoriesInput);
   }
 
-  @Query(() => AdminCategory, { name: 'adminCategory' })
+@Query(() => AdminCategory, { name: 'getAdminCategory' })
   findOne(@Args('id', { type: () => String }) id: string) {
     return this.adminCategoryService.findOne(id);
   }

@@ -199,10 +199,10 @@ type Mutation {
 }
 
 type Query {
-  adminCategories: [AdminCategory!]!
-  adminCategory(id: String!): AdminCategory!
   filterMarketplacePosts(filterPostsInput: FilterMarketplacePostsInput!): [MarketplacePost!]!
   findOne(id: Int!): MarketplacePost!
+  getAdminCategories(getAdminCategoriesInput: GetAllInput!): [AdminCategory!]!
+  getAdminCategory(id: String!): AdminCategory!
   getAdminPost(id: String!): AdminPost!
   getAdminPosts(getAdminPostsInput: GetAllInput!): [AdminPost!]!
   getMarketplacePosts(getMarketplacePostsInput: GetAllInput!): [MarketplacePost!]
