@@ -8,6 +8,7 @@ import { Category } from '../../models';
 import { Model } from 'mongoose';
 import { CreateAdminCategoryInput } from './dto/create-admin-category.input';
 import { UpdateAdminCategoryInput } from './dto/update-admin-category.input';
+import { GetAllDto } from '../../common/inputs/get-all.input';
 
 @Injectable()
 export class AdminCategoryService {
@@ -31,8 +32,14 @@ export class AdminCategoryService {
     return this.categoryModel.create(createAdminCategoryInput);
   }
 
-  async findAll() {
-    return this.categoryModel.find({ isDeleted: false });
+  async findAll(getAdminCategories: GetAllDto) {
+    const { limit, order, page, sortBy } = getAdminCategories;
+    return this.categoryModel
+      .find({ isDeleted: false })
+      .sort({ [sortBy]: order })
+      .skip(page * limit - limit)
+      .limit(limit)
+      .lean();
   }
 
   async findOne(id: string) {

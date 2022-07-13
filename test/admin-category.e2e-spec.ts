@@ -169,6 +169,7 @@ describe('Admin Category resolvers (e2e)', () => {
       expect(errors[0].message).not.toBeNull();
     });
   });
+
   describe('Update Category', () => {
     afterEach(async () => {
       await categoryModel.deleteMany({});
@@ -218,6 +219,77 @@ describe('Admin Category resolvers (e2e)', () => {
               name: 'update one',
             },
             updateAdminCategoryId: new ObjectId().toHexString(),
+          },
+        });
+
+      const { errors } = body;
+
+      expect(errors).toBeDefined();
+      expect(errors[0].message).not.toBeNull();
+    });
+  });
+
+  describe('Get Category', () => {
+    afterEach(async () => {
+      await categoryModel.deleteMany({});
+    });
+
+    const getAdminCategories = `
+    query GetAdminCategories($getAdminCategoriesInput: GetAllDto!) {
+      getAdminCategories(getAdminCategoriesInput: $getAdminCategoriesInput) {
+        _id
+        createdAt
+        name
+        updatedAt
+      }
+    }
+    `;
+
+    it('Should get 10 categories successfully', async () => {
+      const categories = [];
+
+      for (let index = 0; index < 15; index++) {
+        categories.push({ ...generateCategory() });
+      }
+
+      await categoryModel.insertMany(categories);
+
+      const { body } = await request(app.getHttpServer())
+        .post('/graphql')
+        .set('Content-Type', 'application/json')
+        .send({
+          query: getAdminCategories,
+          variables: {
+            getAdminCategoriesInput: {
+              limit: 10,
+            },
+          },
+        });
+
+      const { getAdminCategories: categoriesData } = body.data;
+
+      expect(body.errors).toBeUndefined();
+      expect(categoriesData.length).toBe(10);
+    });
+
+    it('Should fail to get categories, bad request', async () => {
+      const categories = [];
+
+      for (let index = 0; index < 15; index++) {
+        categories.push({ ...generateCategory() });
+      }
+
+      await categoryModel.insertMany(categories);
+
+      const { body } = await request(app.getHttpServer())
+        .post('/graphql')
+        .set('Content-Type', 'application/json')
+        .send({
+          query: getAdminCategories,
+          variables: {
+            getAdminCategoriesInput: {
+              sortBy: 1,
+            },
           },
         });
 

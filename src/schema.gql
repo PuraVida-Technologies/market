@@ -199,11 +199,11 @@ type Mutation {
 }
 
 type Query {
-  adminCategories: [AdminCategory!]!
-  adminCategory(id: String!): AdminCategory!
   adminPost: [AdminPost!]!
   filterMarketplacePosts(filterPostsInput: FilterMarketplacePostsInput!): [MarketplacePost!]!
   findOne(id: Int!): MarketplacePost!
+  getAdminCategories(getAdminCategoriesInput: GetAllDto!): [AdminCategory!]!
+  getAdminCategory(id: String!): AdminCategory!
   getMarketplacePosts(getMarketplacePostsInput: GetAllDto!): [MarketplacePost!]
   getOneAdminPost(id: String!): AdminPost!
   marketplaceAutoCompleteCategory(autoCompleteCategoryInput: AutoCompleteCategoryInput!): [MarketplaceCategory!]!
