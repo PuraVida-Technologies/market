@@ -24,8 +24,8 @@ export class AdminPostResolver {
     return this.adminPostService.findAll(getAdminPostsInput);
   }
 
-  @Query(() => AdminPost)
-  getAdminPost(@Args('id', { type: () => String }) id: string) {
+  @Query(() => AdminPost, { name: 'getAdminPost' })
+  findOne(@Args('id', { type: () => String }) id: string) {
     return this.adminPostService.findOne(id);
   }
 
