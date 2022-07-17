@@ -25,7 +25,7 @@ export class AdminCategoryResolver {
     return this.adminCategoryService.findAll(getAdminCategoriesInput);
   }
 
-@Query(() => AdminCategory, { name: 'getAdminCategory' })
+  @Query(() => AdminCategory, { name: 'getAdminCategory' })
   findOne(@Args('id', { type: () => String }) id: string) {
     return this.adminCategoryService.findOne(id);
   }
