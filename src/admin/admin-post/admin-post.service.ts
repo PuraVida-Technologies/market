@@ -49,8 +49,6 @@ export class AdminPostService {
       };
     }
 
-    console.log(where);
-
     return this.postModel
       .find(where)
       .sort({ [sortBy]: order })
