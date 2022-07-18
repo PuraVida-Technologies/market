@@ -13,6 +13,7 @@ specifiers:
   '@nestjs/schematics': ^8.0.0
   '@nestjs/testing': ^8.0.0
   '@nestjs/throttler': ^2.0.1
+  '@types/body-parser': ^1.19.2
   '@types/cookie-parser': ^1.4.3
   '@types/express': ^4.17.13
   '@types/faker': ^5.5.9
@@ -24,6 +25,7 @@ specifiers:
   '@typescript-eslint/parser': ^5.0.0
   apollo-server-core: ^3.9.0
   apollo-server-express: ^3.9.0
+  body-parser: ^1.20.0
   class-transformer: ^0.5.1
   class-validator: ^0.13.2
   cookie-parser: ^1.4.6
@@ -66,6 +68,7 @@ dependencies:
   '@types/cookie-parser': 1.4.3
   apollo-server-core: 3.10.0_graphql@16.5.0
   apollo-server-express: 3.10.0_graphql@16.5.0
+  body-parser: 1.20.0
   class-transformer: 0.5.1
   class-validator: 0.13.2
   cookie-parser: 1.4.6
@@ -85,6 +88,7 @@ devDependencies:
   '@nestjs/cli': 8.2.8
   '@nestjs/schematics': 8.0.11_typescript@4.7.4
   '@nestjs/testing': 8.4.7_yg656aic4dli3q2c2sx4xyqza4
+  '@types/body-parser': 1.19.2
   '@types/express': 4.17.13
   '@types/faker': 5.5.9
   '@types/jest': 27.5.2
