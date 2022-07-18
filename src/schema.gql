@@ -211,8 +211,8 @@ type MarketplacePost {
 }
 
 type Media {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  """This is the file url"""
+  url: String!
 }
 
 type Mutation {
