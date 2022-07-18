@@ -7,6 +7,7 @@ import { join } from 'path';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { AdminModule } from './admin/admin.module';
 import { MarketplaceModule } from './marketplace/marketplace.module';
+import { MediaModule } from './media/media.module';
 
 @Module({
   imports: [
@@ -33,6 +34,8 @@ import { MarketplaceModule } from './marketplace/marketplace.module';
     AdminModule,
 
     MarketplaceModule,
+
+    MediaModule,
   ],
 })
 export class AppModule {}
