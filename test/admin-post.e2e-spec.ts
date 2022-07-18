@@ -4,6 +4,7 @@ import * as request from 'supertest';
 import { Model } from 'mongoose';
 import { getModelToken } from '@nestjs/mongoose';
 import { ObjectId } from 'bson';
+import * as faker from 'faker';
 
 import { POST_STATUS } from '../src/common/constants';
 import { setupTestApp } from '../test/resources/app-test.module';
@@ -343,7 +344,7 @@ describe('Admin Post resolvers (e2e)', () => {
     });
 
     const getAdminPosts = `
-    query GetAdminPosts($getAdminPostsInput: GetAllInput!) {
+    query GetAdminPosts($getAdminPostsInput: GetAllAdminPostsInput!) {
       getAdminPosts(getAdminPostsInput: $getAdminPostsInput) {
         _id
         address
@@ -389,6 +390,96 @@ describe('Admin Post resolvers (e2e)', () => {
 
       expect(body.errors).toBeUndefined();
       expect(postsData.length).toBe(10);
+    });
+
+    it('Should get posts between 2022-07-01 up to 2022-07-15, successfully, will get 5 posts', async () => {
+      const category = await categoryModel.findOne({}).lean();
+
+      const posts = [];
+
+      for (let index = 0; index < 10; index++) {
+        posts.push({
+          ...generatePost(),
+          categoryId: category._id,
+          category,
+        });
+      }
+
+      for (let index = 0; index < 5; index++) {
+        posts.push({
+          ...generatePost(),
+          updatedAt: faker.date.between('2022-07-01', '2022-07-15'),
+          categoryId: category._id,
+          category,
+        });
+      }
+
+      await postModel.insertMany(posts);
+
+      const { body } = await request(app.getHttpServer())
+        .post('/graphql')
+        .set('Content-Type', 'application/json')
+        .send({
+          query: getAdminPosts,
+          variables: {
+            getAdminPostsInput: {
+              recentlyUpdatePeriod: {
+                startDate: '2022-07-01',
+                endDate: '2022-07-15',
+              },
+            },
+          },
+        });
+
+      const { getAdminPosts: postsData } = body.data;
+
+      expect(body.errors).toBeUndefined();
+      expect(postsData.length).toBe(5);
+    });
+
+    it('Should get posts between 2022-07-20 up to 2022-07-25, successfully, will get 0 posts', async () => {
+      const category = await categoryModel.findOne({}).lean();
+
+      const posts = [];
+
+      for (let index = 0; index < 10; index++) {
+        posts.push({
+          ...generatePost(),
+          categoryId: category._id,
+          category,
+        });
+      }
+
+      for (let index = 0; index < 5; index++) {
+        posts.push({
+          ...generatePost(),
+          updatedAt: faker.date.between('2022-07-01', '2022-07-15'),
+          categoryId: category._id,
+          category,
+        });
+      }
+
+      await postModel.insertMany(posts);
+
+      const { body } = await request(app.getHttpServer())
+        .post('/graphql')
+        .set('Content-Type', 'application/json')
+        .send({
+          query: getAdminPosts,
+          variables: {
+            getAdminPostsInput: {
+              recentlyUpdatePeriod: {
+                startDate: '2022-07-20',
+                endDate: '2022-07-25',
+              },
+            },
+          },
+        });
+
+      const { getAdminPosts: postsData } = body.data;
+
+      expect(body.errors).toBeUndefined();
+      expect(postsData.length).toBe(0);
     });
 
     it('Should fail to get posts, bad request', async () => {

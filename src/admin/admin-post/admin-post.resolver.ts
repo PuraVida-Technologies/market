@@ -2,11 +2,11 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { AdminPostService } from './admin-post.service';
 import { AdminPost } from './entities/admin-post.entity';
 import { ApproveOrDeclinePostInput } from './dto/approve-or-decline-post.input';
-import { GetAllDto } from '../../common/inputs/get-all.input';
+import { GetAllAdminPostsInput } from './dto/find-admin-posts.input';
 
 @Resolver(() => AdminPost)
 export class AdminPostResolver {
-  constructor(private readonly adminPostService: AdminPostService) { }
+  constructor(private readonly adminPostService: AdminPostService) {}
 
   @Mutation(() => AdminPost)
   approveOrDeclinePost(
@@ -19,7 +19,7 @@ export class AdminPostResolver {
   @Query(() => [AdminPost])
   getAdminPosts(
     @Args('getAdminPostsInput')
-    getAdminPostsInput?: GetAllDto,
+    getAdminPostsInput?: GetAllAdminPostsInput,
   ) {
     return this.adminPostService.findAll(getAdminPostsInput);
   }

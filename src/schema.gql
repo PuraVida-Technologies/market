@@ -106,6 +106,14 @@ input CreateUserRatingPostInput {
   value: Float!
 }
 
+input DateFilterInput {
+  """This is the end date for filter"""
+  endDate: DateTime!
+
+  """This is the start date for filter"""
+  startDate: DateTime!
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -135,6 +143,23 @@ input FilterMarketplacePostsInput {
 
   """This is the page number"""
   page: Float = 1
+
+  """This is the field sort by it"""
+  sortBy: String = "createdAt"
+}
+
+input GetAllAdminPostsInput {
+  """This is limit number"""
+  limit: Float = 10
+
+  """This is the field sort by it"""
+  order: String = "desc"
+
+  """This is the page number"""
+  page: Float = 1
+
+  """This is the date filter"""
+  recentlyUpdatePeriod: DateFilterInput
 
   """This is the field sort by it"""
   sortBy: String = "createdAt"
@@ -204,7 +229,7 @@ type Query {
   getAdminCategories(getAdminCategoriesInput: GetAllInput!): [AdminCategory!]!
   getAdminCategory(id: String!): AdminCategory!
   getAdminPost(id: String!): AdminPost!
-  getAdminPosts(getAdminPostsInput: GetAllInput!): [AdminPost!]!
+  getAdminPosts(getAdminPostsInput: GetAllAdminPostsInput!): [AdminPost!]!
   getMarketplacePosts(getMarketplacePostsInput: GetAllInput!): [MarketplacePost!]
   marketplaceAutoCompleteCategory(autoCompleteCategoryInput: AutoCompleteCategoryInput!): [MarketplaceCategory!]!
   marketplaceCategory(id: Int!): MarketplaceCategory!

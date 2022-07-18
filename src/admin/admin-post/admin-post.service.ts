@@ -1,9 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { GetAllDto } from '../../common/inputs/get-all.input';
 import { Category, Post } from '../../models';
 import { ApproveOrDeclinePostInput } from './dto/approve-or-decline-post.input';
+import { GetAllAdminPostsInput } from './dto/find-admin-posts.input';
+import * as _ from 'lodash';
 
 @Injectable()
 export class AdminPostService {
@@ -28,10 +29,28 @@ export class AdminPostService {
     return post;
   }
 
-  findAll(getAdminPostInput: GetAllDto) {
-    const { limit, order, page, sortBy } = getAdminPostInput;
+  findAll(getAdminPostInput: GetAllAdminPostsInput) {
+    const { limit, order, page, sortBy, recentlyUpdatePeriod } =
+      getAdminPostInput;
+
+    const where: any = {
+      isDeleted: false,
+    };
+
+    if (!_.isNil(recentlyUpdatePeriod)) {
+      recentlyUpdatePeriod.endDate.setDate(
+        recentlyUpdatePeriod.endDate.getDate() + 1,
+      );
+      recentlyUpdatePeriod.endDate.setHours(0, 0, 0, 0);
+
+      where.updatedAt = {
+        $gte: recentlyUpdatePeriod.startDate,
+        $lt: recentlyUpdatePeriod.endDate,
+      };
+    }
+
     return this.postModel
-      .find({ isDeleted: false })
+      .find(where)
       .sort({ [sortBy]: order })
       .skip(page * limit - limit)
       .limit(limit)

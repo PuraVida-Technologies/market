@@ -177,8 +177,6 @@ export class MarketplacePostService {
 
       return _.values(merged);
     } catch (error) {
-      console.log(error);
-
       await session.abortTransaction();
       throw new UnprocessableEntityException(
         `can't filter right now, please try again later`,
