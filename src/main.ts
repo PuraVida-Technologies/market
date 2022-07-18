@@ -4,9 +4,18 @@ import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import { json, urlencoded } from 'body-parser';
+import { graphqlUploadExpress } from 'graphql-upload';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // middleware for uploading files
+  app.use(
+    graphqlUploadExpress({
+      maxFileSize: +process.env.UPLOAD_FILE_MAX_FILE_SIZE,
+      maxFiles: +process.env.UPLOAD_FILE_MAX_FILE_NUMBER,
+    }),
+  );
 
   //validation for api endpoints
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
