@@ -26,6 +26,7 @@ specifiers:
   apollo-server-core: ^3.9.0
   apollo-server-express: ^3.9.0
   body-parser: ^1.20.0
+  bson: ^4.6.5
   class-transformer: ^0.5.1
   class-validator: ^0.13.2
   cookie-parser: ^1.4.6
@@ -69,6 +70,7 @@ dependencies:
   apollo-server-core: 3.10.0_graphql@16.5.0
   apollo-server-express: 3.10.0_graphql@16.5.0
   body-parser: 1.20.0
+  bson: 4.6.5
   class-transformer: 0.5.1
   class-validator: 0.13.2
   cookie-parser: 1.4.6
