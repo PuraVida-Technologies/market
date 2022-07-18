@@ -210,6 +210,11 @@ type MarketplacePost {
   userId: String!
 }
 
+type Media {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 type Mutation {
   approveOrDeclinePost(approveOrDeclinePostInput: ApproveOrDeclinePostInput!): AdminPost!
   createAdminCategory(createAdminCategoryInput: CreateAdminCategoryInput!): AdminCategory!
@@ -221,6 +226,7 @@ type Mutation {
   removeUserRatingPost(id: String!): UserRatePost!
   updateAdminCategory(id: String!, updateAdminCategoryInput: UpdateAdminCategoryInput!): AdminCategory!
   updateMarketplacePost(updateMarketplacePostInput: UpdateMarketplacePostInput!): MarketplacePost!
+  uploadFile(file: Upload!): Media!
 }
 
 type Query {
@@ -283,6 +289,9 @@ input UpdateMarketplacePostInput {
   """This is the Owner Id"""
   userId: String
 }
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 type UserRatePost {
   """This is user rate for post  id"""
