@@ -3,11 +3,26 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { Model } from 'mongoose';
 import { ObjectId } from 'bson';
 
-import { rootMongooseTestModule, closeInMongodConnection } from '../../../test/mongo.connection';
+import {
+  rootMongooseTestModule,
+  closeInMongodConnection,
+} from '../../../test/mongo.connection';
 import { Category, CategorySchema } from '../../models';
 import { generateCategory } from '../../../test/resources';
 import { AdminCategoryService } from './admin-category.service';
-import { NotFoundException } from '@nestjs/common';
+import { ConflictException, NotFoundException } from '@nestjs/common';
+
+class NoErrorThrownError extends Error {}
+
+const getError = async <TError>(call: () => unknown): Promise<TError> => {
+  try {
+    await call();
+
+    throw new NoErrorThrownError();
+  } catch (error: unknown) {
+    return error as TError;
+  }
+};
 
 describe('AdminCategoryService', () => {
   let service: AdminCategoryService;
@@ -28,9 +43,7 @@ describe('AdminCategoryService', () => {
     }).compile();
 
     service = module.get<AdminCategoryService>(AdminCategoryService);
-    categoryModel = module.get<Model<Category>>(
-      getModelToken(Category.name),
-    );
+    categoryModel = module.get<Model<Category>>(getModelToken(Category.name));
   });
 
   afterAll(async () => {
@@ -47,6 +60,14 @@ describe('AdminCategoryService', () => {
       const category = generateCategory();
       const catResponse = await service.create(category);
       expect(category.name).toBe(catResponse.name);
+    });
+
+    it('Should fail to create the category, because it is already exists', async () => {
+      const category = generateCategory();
+      await categoryModel.create(category);
+      const error: any = await getError(async () => service.create(category));
+      expect(error).toBeInstanceOf(ConflictException);
+      expect(error.message).not.toBeNull();
     });
   });
 
@@ -85,7 +106,7 @@ describe('AdminCategoryService', () => {
     it('Should fail to get category', async () => {
       const catResponse = await service.findOne(new ObjectId().toHexString());
       expect(catResponse).toBeNull();
-    })
+    });
   });
 
   describe('update', () => {
@@ -96,12 +117,14 @@ describe('AdminCategoryService', () => {
     it('Should update a category', async () => {
       const category = generateCategory();
       await categoryModel.insertMany([category]);
-      const catResponse = await service.update(category._id, { name: "test" });
-      expect(catResponse.name).toBe("test");
+      const catResponse = await service.update(category._id, { name: 'test' });
+      expect(catResponse.name).toBe('test');
     });
 
     it('Should fail to update category if not found', async () => {
-      await expect(service.update(new ObjectId().toHexString(), { name: "test" })).rejects.toThrowError(NotFoundException);
+      await expect(
+        service.update(new ObjectId().toHexString(), { name: 'test' }),
+      ).rejects.toThrowError(NotFoundException);
     });
   });
 
@@ -118,7 +141,9 @@ describe('AdminCategoryService', () => {
     });
 
     it('Should fail to remove category if not found', async () => {
-      await expect(service.remove(new ObjectId().toHexString())).rejects.toThrow(NotFoundException);
+      await expect(
+        service.remove(new ObjectId().toHexString()),
+      ).rejects.toThrow(NotFoundException);
     });
   });
 });
