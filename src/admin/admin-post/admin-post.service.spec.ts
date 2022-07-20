@@ -13,7 +13,7 @@ import { AdminPostService } from './admin-post.service';
 import { NotFoundException } from '@nestjs/common';
 import { POST_STATUS } from '../../common/constants';
 
-describe('AdminCategoryService', () => {
+describe('AdminPostService', () => {
   let service: AdminPostService;
   let categoryModel: Model<Category>;
   let postModel: Model<Post>;
