@@ -12,18 +12,6 @@ import { generateCategory } from '../../../test/resources';
 import { AdminCategoryService } from './admin-category.service';
 import { ConflictException, NotFoundException } from '@nestjs/common';
 
-class NoErrorThrownError extends Error {}
-
-const getError = async <TError>(call: () => unknown): Promise<TError> => {
-  try {
-    await call();
-
-    throw new NoErrorThrownError();
-  } catch (error: unknown) {
-    return error as TError;
-  }
-};
-
 describe('AdminCategoryService', () => {
   let service: AdminCategoryService;
   let categoryModel: Model<Category>;
@@ -65,9 +53,8 @@ describe('AdminCategoryService', () => {
     it('Should fail to create the category, because it is already exists', async () => {
       const category = generateCategory();
       await categoryModel.create(category);
-      const error: any = await getError(async () => service.create(category));
-      expect(error).toBeInstanceOf(ConflictException);
-      expect(error.message).not.toBeNull();
+
+      await expect(service.create(category)).rejects.toThrowError(ConflictException);
     });
   });
 

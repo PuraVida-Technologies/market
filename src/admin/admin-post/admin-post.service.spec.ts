@@ -7,11 +7,11 @@ import {
   rootMongooseTestModule,
   closeInMongodConnection,
 } from '../../../test/mongo.connection';
-import { Category, Post, PostSchema } from '../../models';
+import { Category, CategorySchema, Post, PostSchema } from '../../models';
 import { generateCategory, generatePost } from '../../../test/resources';
 import { AdminPostService } from './admin-post.service';
 import { NotFoundException } from '@nestjs/common';
-import { POST_STATUS } from 'src/common/constants';
+import { POST_STATUS } from '../../common/constants';
 
 describe('AdminCategoryService', () => {
   let service: AdminPostService;
@@ -30,6 +30,10 @@ describe('AdminCategoryService', () => {
       imports: [
         rootMongooseTestModule(),
         MongooseModule.forFeature([
+          {
+            name: Category.name,
+            schema: CategorySchema,
+          },
           {
             name: Post.name,
             schema: PostSchema,
@@ -97,7 +101,7 @@ describe('AdminCategoryService', () => {
       }
       await postModel.insertMany(posts);
 
-      const response = await service.findAll({});
+      const response = await service.findAll({ limit });
       expect(response.length).toBeLessThanOrEqual(limit);
     });
   });
@@ -113,13 +117,14 @@ describe('AdminCategoryService', () => {
         ...generatePost(),
         categoryId: category._id
       };
+      await postModel.insertMany([post]);
+
       const response = await service.findOne(post._id);
       expect(response._id.toHexString()).toBe(post._id);
     });
 
     it('Should fail to get post if not exist', async () => {
-      const response = await service.findOne(new ObjectId().toHexString());
-      expect(response).toBeNull();
+      expect(service.findOne(new ObjectId().toHexString())).rejects.toThrowError(NotFoundException);
     });
   });
 
