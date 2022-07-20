@@ -39,6 +39,10 @@ describe('AdminCategoryService', () => {
   });
 
   describe('create', () => {
+    afterEach(async () => {
+      await categoryModel.deleteMany({});
+    });
+
     it('Should create category successfully', async () => {
       const category = generateCategory();
       const catResponse = await service.create(category);
@@ -47,6 +51,10 @@ describe('AdminCategoryService', () => {
   });
 
   describe('findAll', () => {
+    afterEach(async () => {
+      await categoryModel.deleteMany({});
+    });
+
     it('Should return 10 categories', async () => {
       const categories = [];
       const num = 15;
@@ -63,6 +71,10 @@ describe('AdminCategoryService', () => {
   });
 
   describe('findOne', () => {
+    afterEach(async () => {
+      await categoryModel.deleteMany({});
+    });
+
     it('Should get a single category', async () => {
       const category = generateCategory();
       await categoryModel.insertMany([category]);
@@ -77,6 +89,10 @@ describe('AdminCategoryService', () => {
   });
 
   describe('update', () => {
+    afterEach(async () => {
+      await categoryModel.deleteMany({});
+    });
+
     it('Should update a category', async () => {
       const category = generateCategory();
       await categoryModel.insertMany([category]);
@@ -90,6 +106,10 @@ describe('AdminCategoryService', () => {
   });
 
   describe('remove', () => {
+    afterEach(async () => {
+      await categoryModel.deleteMany({});
+    });
+
     it('Should remove a category', async () => {
       const category = generateCategory();
       await categoryModel.insertMany([category]);
