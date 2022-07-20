@@ -205,7 +205,7 @@ type MarketplacePost {
   openHours: String!
   price: Float!
   rating: Float
-  status: String!
+  status: POST_STATUS!
   updatedAt: DateTime!
   userId: String!
 }
@@ -225,17 +225,17 @@ type Mutation {
 
 enum POST_STATUS {
   APPROVED
-  DECLINE
+  DECLINED
   PENDING
 }
 
 type Query {
   filterMarketplacePosts(filterPostsInput: FilterMarketplacePostsInput!): [MarketplacePost!]!
-  findOne(id: Int!): MarketplacePost!
   getAdminCategories(getAdminCategoriesInput: GetAllInput!): [AdminCategory!]!
   getAdminCategory(id: String!): AdminCategory!
   getAdminPost(id: String!): AdminPost!
   getAdminPosts(getAdminPostsInput: GetAllAdminPostsInput!): [AdminPost!]!
+  getMarketPlacePost(id: Int!): MarketplacePost!
   getMarketplacePosts(getMarketplacePostsInput: GetAllInput!): [MarketplacePost!]
   marketplaceAutoCompleteCategory(autoCompleteCategoryInput: AutoCompleteCategoryInput!): [MarketplaceCategory!]!
   marketplaceCategory(id: Int!): MarketplaceCategory!

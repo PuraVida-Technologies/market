@@ -12,7 +12,7 @@ export class ApproveOrDeclinePostInput {
   @Field(() => POST_STATUS, { description: 'This is the status of the Post' })
   @IsNotEmpty()
   @IsEnum(POST_STATUS, {
-    message: `status must be on these values: ${POST_STATUS.APPROVED}, ${POST_STATUS.DECLINE}, ${POST_STATUS.PENDING}`,
+    message: `status must be on these values: ${POST_STATUS.APPROVED}, ${POST_STATUS.DECLINED}, ${POST_STATUS.PENDING}`,
   })
   status: POST_STATUS;
 

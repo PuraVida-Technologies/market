@@ -50,33 +50,30 @@ describe('Admin Post resolvers (e2e)', () => {
       await postModel.deleteMany({});
     });
 
+    const approveOrDeclineAdminPost = `
+    mutation ApproveOrDeclinePost($approveOrDeclinePostInput: ApproveOrDeclinePostInput!) {
+      approveOrDeclinePost(approveOrDeclinePostInput: $approveOrDeclinePostInput) {
+        _id
+        name
+        status
+      }
+    }`;
+
     it('Should Approve post successfully', async () => {
       const post = await postModel.findOne({}).lean();
-
-      const approveOrDeclineAdminPost = `
-      mutation {
-        approveOrDeclinePost(approveOrDeclinePostInput:{
-          postId: "${post._id.toString()}"          
-          status: "${POST_STATUS.APPROVED}"
-      }){
-          _id
-          address
-          categoryId
-          description
-          imagesUrls
-          mainImageUrl
-          name
-          openHours
-          price
-          userId
-          status
-         }
-        }`;
 
       const { body } = await request(app.getHttpServer())
         .post('/graphql')
         .set('Content-Type', 'application/json')
-        .send({ query: approveOrDeclineAdminPost });
+        .send({
+          query: approveOrDeclineAdminPost,
+          variables: {
+            approveOrDeclinePostInput: {
+              postId: post._id.toHexString(),
+              status: POST_STATUS.APPROVED
+            }
+          }
+        });
 
       const { status } = body.data.approveOrDeclinePost;
 
@@ -87,68 +84,42 @@ describe('Admin Post resolvers (e2e)', () => {
     it('Should Decline post successfully', async () => {
       const post = await postModel.findOne({}).lean();
 
-      const approveOrDeclineAdminPost = `
-      mutation {
-        approveOrDeclinePost(approveOrDeclinePostInput:{
-          postId: "${post._id.toString()}"          
-          status: "${POST_STATUS.DECLINE}"
-      }){
-          _id
-          address
-          categoryId
-          description
-          imagesUrls
-          mainImageUrl
-          name
-          openHours
-          price
-          userId
-          status
-         }
-        }`;
-
       const { body } = await request(app.getHttpServer())
         .post('/graphql')
         .set('Content-Type', 'application/json')
-        .send({ query: approveOrDeclineAdminPost });
+        .send({
+          query: approveOrDeclineAdminPost,
+          variables: {
+            approveOrDeclinePostInput: {
+              postId: post._id.toHexString(),
+              status: POST_STATUS.DECLINED
+            }
+          }
+        });
 
       const { status } = body.data.approveOrDeclinePost;
 
       expect(body.errors).toBeUndefined();
-      expect(status).toBe(POST_STATUS.DECLINE);
+      expect(status).toBe(POST_STATUS.DECLINED);
     });
 
     it('Should fail to change post status, bad request', async () => {
-      const approveOrDeclineAdminPost = `
-      mutation {
-        approveOrDeclinePost(approveOrDeclinePostInput:{          
-          status: "${POST_STATUS.DECLINE}"
-      }){
-          _id
-          address
-          categoryId
-          description
-          imagesUrls
-          mainImageUrl
-          name
-          openHours
-          price
-          userId
-          status
-         }
-        }`;
-
       const { body } = await request(app.getHttpServer())
         .post('/graphql')
         .set('Content-Type', 'application/json')
-        .send({ query: approveOrDeclineAdminPost });
+        .send({
+          query: approveOrDeclineAdminPost,
+          variables: {
+            approveOrDeclinePostInput: {
+              status: POST_STATUS.DECLINED
+            }
+          }
+        });
 
       const { errors } = body;
 
       expect(errors).toBeDefined();
-      expect(errors[0].message).toBe(
-        'Field "ApproveOrDeclinePostInput.postId" of required type "String!" was not provided.',
-      );
+      expect(errors[0].message).toBeDefined();
     });
 
     it('Should fail to change post status, the post not exists', async () => {
@@ -160,30 +131,18 @@ describe('Admin Post resolvers (e2e)', () => {
         { lean: true },
       );
 
-      const approveOrDeclineAdminPost = `
-      mutation {
-        approveOrDeclinePost(approveOrDeclinePostInput:{
-          postId: "${post._id.toString()}"       
-          status: "${POST_STATUS.DECLINE}"
-      }){
-          _id
-          address
-          categoryId
-          description
-          imagesUrls
-          mainImageUrl
-          name
-          openHours
-          price
-          userId
-          status
-         }
-        }`;
-
       const { body } = await request(app.getHttpServer())
         .post('/graphql')
         .set('Content-Type', 'application/json')
-        .send({ query: approveOrDeclineAdminPost });
+        .send({
+          query: approveOrDeclineAdminPost,
+          variables: {
+            approveOrDeclinePostInput: {
+              postId: new ObjectId().toHexString(),
+              status: POST_STATUS.DECLINED
+            }
+          }
+        });
 
       const { errors } = body;
 

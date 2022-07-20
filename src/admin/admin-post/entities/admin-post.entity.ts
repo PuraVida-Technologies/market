@@ -1,5 +1,5 @@
 import { ObjectType, Field, registerEnumType } from '@nestjs/graphql';
-import { POST_STATUS } from 'src/common/constants';
+import { POST_STATUS } from '../../../common/constants';
 
 registerEnumType(POST_STATUS, {
   name: 'POST_STATUS',
@@ -34,7 +34,7 @@ export class AdminPost {
   @Field()
   price: number;
 
-  @Field(type => POST_STATUS)
+  @Field(() => POST_STATUS)
   status: POST_STATUS;
 
   @Field()
