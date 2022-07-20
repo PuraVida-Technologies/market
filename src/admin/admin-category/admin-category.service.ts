@@ -34,6 +34,7 @@ export class AdminCategoryService {
 
   async findAll(getAdminCategories: GetAllDto) {
     const { limit, order, page, sortBy } = getAdminCategories;
+
     return this.categoryModel
       .find({ isDeleted: false })
       .sort({ [sortBy]: order })

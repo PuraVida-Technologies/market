@@ -445,6 +445,7 @@ describe('Admin Post resolvers (e2e)', () => {
       for (let index = 0; index < 10; index++) {
         posts.push({
           ...generatePost(),
+          updatedAt: faker.date.between('2022-06-01', '2022-06-15'),
           categoryId: category._id,
           category,
         });
