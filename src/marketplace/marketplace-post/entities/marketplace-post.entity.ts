@@ -30,7 +30,7 @@ export class MarketplacePost {
   @Field()
   price: number;
 
-  @Field(type => POST_STATUS)
+  @Field(() => POST_STATUS)
   status: POST_STATUS;
 
   @Field()
