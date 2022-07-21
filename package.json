@@ -23,6 +23,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@google-cloud/storage": "^6.2.3",
     "@nestjs/apollo": "^10.0.16",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^2.1.0",
@@ -34,23 +35,28 @@
     "@types/cookie-parser": "^1.4.3",
     "apollo-server-core": "^3.9.0",
     "apollo-server-express": "^3.9.0",
+    "body-parser": "^1.20.0",
+    "bson": "^4.6.5",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "cookie-parser": "^1.4.6",
     "faker": "^5.5.3",
     "graphql": "^16.5.0",
+    "graphql-upload": "^13.0.0",
     "helmet": "^5.1.0",
     "lodash": "^4.17.21",
     "mongodb-memory-server": "^8.7.2",
     "mongoose": "^6.4.2",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",
     "@nestjs/schematics": "^8.0.0",
     "@nestjs/testing": "^8.0.0",
+    "@types/body-parser": "^1.19.2",
     "@types/express": "^4.17.13",
     "@types/faker": "^5.5.9",
     "@types/jest": "^27.0.1",
