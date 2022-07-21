@@ -1,5 +1,5 @@
 export enum POST_STATUS {
-  APPROVED = 'approved',
-  DECLINE = 'decline',
-  PENDING = 'pending',
+  APPROVED = 'APPROVED',
+  DECLINED = 'DECLINED',
+  PENDING = 'PENDING',
 }

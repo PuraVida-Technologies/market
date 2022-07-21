@@ -4,19 +4,17 @@ import {
   IsMongoId,
   IsNotEmpty,
   IsString,
-  Length,
 } from 'class-validator';
 import { POST_STATUS } from '../../../common/constants';
 
 @InputType()
 export class ApproveOrDeclinePostInput {
-  @Field(() => String, { description: 'This is the status of the Post' })
-  @IsString()
-  @Length(1)
+  @Field(() => POST_STATUS, { description: 'This is the status of the Post' })
+  @IsNotEmpty()
   @IsEnum(POST_STATUS, {
-    message: `status must be on these values: ${POST_STATUS.APPROVED}, ${POST_STATUS.DECLINE}, ${POST_STATUS.PENDING}`,
+    message: `status must be on these values: ${POST_STATUS.APPROVED}, ${POST_STATUS.DECLINED}, ${POST_STATUS.PENDING}`,
   })
-  status: string;
+  status: POST_STATUS;
 
   @Field(() => String, { description: 'This is the post id' })
   @IsString()

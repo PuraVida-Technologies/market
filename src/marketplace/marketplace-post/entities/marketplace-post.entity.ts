@@ -1,4 +1,5 @@
 import { ObjectType, Field } from '@nestjs/graphql';
+import { POST_STATUS } from '../../../common/constants';
 
 @ObjectType()
 export class MarketplacePost {
@@ -29,8 +30,8 @@ export class MarketplacePost {
   @Field()
   price: number;
 
-  @Field()
-  status: string;
+  @Field(() => POST_STATUS)
+  status: POST_STATUS;
 
   @Field()
   openHours: string;

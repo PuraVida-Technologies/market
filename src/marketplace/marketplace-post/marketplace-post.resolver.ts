@@ -28,7 +28,7 @@ export class MarketplacePostResolver {
     return this.marketplacePostService.findAll(getMarketplacePostsInput);
   }
 
-  @Query(() => MarketplacePost)
+  @Query(() => MarketplacePost, { name: 'getMarketPlacePost' })
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.marketplacePostService.findOne(id);
   }

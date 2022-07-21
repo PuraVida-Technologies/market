@@ -20,7 +20,7 @@ type AdminPost {
   name: String!
   openHours: String!
   price: Float!
-  status: String!
+  status: POST_STATUS!
   updatedAt: DateTime!
   userId: String!
 }
@@ -30,7 +30,7 @@ input ApproveOrDeclinePostInput {
   postId: String!
 
   """This is the status of the Post"""
-  status: String!
+  status: POST_STATUS!
 }
 
 input AutoCompleteCategoryInput {
@@ -205,7 +205,7 @@ type MarketplacePost {
   openHours: String!
   price: Float!
   rating: Float
-  status: String!
+  status: POST_STATUS!
   updatedAt: DateTime!
   userId: String!
 }
@@ -223,13 +223,19 @@ type Mutation {
   updateMarketplacePost(updateMarketplacePostInput: UpdateMarketplacePostInput!): MarketplacePost!
 }
 
+enum POST_STATUS {
+  APPROVED
+  DECLINED
+  PENDING
+}
+
 type Query {
   filterMarketplacePosts(filterPostsInput: FilterMarketplacePostsInput!): [MarketplacePost!]!
-  findOne(id: Int!): MarketplacePost!
   getAdminCategories(getAdminCategoriesInput: GetAllInput!): [AdminCategory!]!
   getAdminCategory(id: String!): AdminCategory!
   getAdminPost(id: String!): AdminPost!
   getAdminPosts(getAdminPostsInput: GetAllAdminPostsInput!): [AdminPost!]!
+  getMarketPlacePost(id: Int!): MarketplacePost!
   getMarketplacePosts(getMarketplacePostsInput: GetAllInput!): [MarketplacePost!]
   marketplaceAutoCompleteCategory(autoCompleteCategoryInput: AutoCompleteCategoryInput!): [MarketplaceCategory!]!
   marketplaceCategory(id: Int!): MarketplaceCategory!
