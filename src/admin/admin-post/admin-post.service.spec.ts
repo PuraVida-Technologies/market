@@ -21,9 +21,9 @@ describe('AdminPostService', () => {
   const cleanUpData = async () => {
     await Promise.all([
       () => categoryModel.deleteMany({}),
-      () => postModel.deleteMany({})
+      () => postModel.deleteMany({}),
     ]);
-  }
+  };
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -49,7 +49,7 @@ describe('AdminPostService', () => {
   });
 
   afterAll(async () => {
-    await cleanUpData()
+    await cleanUpData();
     await closeInMongodConnection();
   });
 
@@ -62,13 +62,13 @@ describe('AdminPostService', () => {
 
       const post = {
         ...generatePost(),
-        categoryId: category._id
+        categoryId: category._id,
       };
       await postModel.insertMany([post]);
 
       const response = await service.approveOrDecline({
         status: POST_STATUS.APPROVED,
-        postId: post._id
+        postId: post._id,
       });
       expect(response.status).toBe(POST_STATUS.APPROVED);
     });
@@ -77,7 +77,7 @@ describe('AdminPostService', () => {
       await expect(
         service.approveOrDecline({
           status: POST_STATUS.APPROVED,
-          postId: new ObjectId().toHexString()
+          postId: new ObjectId().toHexString(),
         }),
       ).rejects.toThrow(NotFoundException);
     });
@@ -96,7 +96,7 @@ describe('AdminPostService', () => {
       for (let index = 0; index < num; index++) {
         posts.push({
           ...generatePost(),
-          categoryId: category._id
+          categoryId: category._id,
         });
       }
       await postModel.insertMany(posts);
@@ -115,7 +115,7 @@ describe('AdminPostService', () => {
 
       const post = {
         ...generatePost(),
-        categoryId: category._id
+        categoryId: category._id,
       };
       await postModel.insertMany([post]);
 
@@ -124,7 +124,9 @@ describe('AdminPostService', () => {
     });
 
     it('Should fail to get post if not exist', async () => {
-      expect(service.findOne(new ObjectId().toHexString())).rejects.toThrowError(NotFoundException);
+      expect(
+        service.findOne(new ObjectId().toHexString()),
+      ).rejects.toThrowError(NotFoundException);
     });
   });
 
@@ -137,7 +139,7 @@ describe('AdminPostService', () => {
 
       const post = {
         ...generatePost(),
-        categoryId: category._id
+        categoryId: category._id,
       };
       await postModel.insertMany([post]);
 

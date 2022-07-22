@@ -70,9 +70,9 @@ describe('Admin Post resolvers (e2e)', () => {
           variables: {
             approveOrDeclinePostInput: {
               postId: post._id.toHexString(),
-              status: POST_STATUS.APPROVED
-            }
-          }
+              status: POST_STATUS.APPROVED,
+            },
+          },
         });
 
       const { status } = body.data.approveOrDeclinePost;
@@ -92,9 +92,9 @@ describe('Admin Post resolvers (e2e)', () => {
           variables: {
             approveOrDeclinePostInput: {
               postId: post._id.toHexString(),
-              status: POST_STATUS.DECLINED
-            }
-          }
+              status: POST_STATUS.DECLINED,
+            },
+          },
         });
 
       const { status } = body.data.approveOrDeclinePost;
@@ -111,9 +111,9 @@ describe('Admin Post resolvers (e2e)', () => {
           query: approveOrDeclineAdminPost,
           variables: {
             approveOrDeclinePostInput: {
-              status: POST_STATUS.DECLINED
-            }
-          }
+              status: POST_STATUS.DECLINED,
+            },
+          },
         });
 
       const { errors } = body;
@@ -139,9 +139,9 @@ describe('Admin Post resolvers (e2e)', () => {
           variables: {
             approveOrDeclinePostInput: {
               postId: new ObjectId().toHexString(),
-              status: POST_STATUS.DECLINED
-            }
-          }
+              status: POST_STATUS.DECLINED,
+            },
+          },
         });
 
       const { errors } = body;

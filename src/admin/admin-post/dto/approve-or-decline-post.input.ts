@@ -1,10 +1,5 @@
 import { InputType, Field } from '@nestjs/graphql';
-import {
-  IsEnum,
-  IsMongoId,
-  IsNotEmpty,
-  IsString,
-} from 'class-validator';
+import { IsEnum, IsMongoId, IsNotEmpty, IsString } from 'class-validator';
 import { POST_STATUS } from '../../../common/constants';
 
 @InputType()
