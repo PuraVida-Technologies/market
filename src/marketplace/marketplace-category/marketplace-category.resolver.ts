@@ -1,4 +1,4 @@
-import { Resolver, Query, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Args } from '@nestjs/graphql';
 import { MarketplaceCategoryService } from './marketplace-category.service';
 import { MarketplaceCategory } from './entities/marketplace-category.entity';
 import { AutoCompleteCategoryInput } from './dto/auto-complete.input';
@@ -21,13 +21,13 @@ export class MarketplaceCategoryResolver {
     );
   }
 
-  @Query(() => [MarketplaceCategory], { name: 'marketplaceCategory' })
+  @Query(() => [MarketplaceCategory], { name: 'getMarketplaceCategories' })
   findAll() {
     return this.marketplaceCategoryService.findAll();
   }
 
-  @Query(() => MarketplaceCategory, { name: 'marketplaceCategory' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  @Query(() => MarketplaceCategory, { name: 'getMarketplaceCategory' })
+  findOne(@Args('id', { type: () => String }) id: string) {
     return this.marketplaceCategoryService.findOne(id);
   }
 }

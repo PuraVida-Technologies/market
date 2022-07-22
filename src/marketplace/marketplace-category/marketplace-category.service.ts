@@ -13,11 +13,11 @@ export class MarketplaceCategoryService {
   ) {}
 
   findAll() {
-    return `This action returns all marketplaceCategory`;
+    return this.categoryModel.find({ isDeleted: false }).lean();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} marketplaceCategory`;
+  findOne(id: string) {
+    return this.categoryModel.findOne({ _id: id, isDeleted: false });
   }
 
   async autoComplete(autoCompleteCategoryInput: AutoCompleteCategoryInput) {
