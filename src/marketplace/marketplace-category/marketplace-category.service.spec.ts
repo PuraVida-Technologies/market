@@ -47,8 +47,9 @@ describe('MarketplaceCategoryService', () => {
 
     it('Should return all 10 categories which are active', async () => {
       const categories = [];
-      const num = 15;
-      const deletedCount = 10;
+      const limit = 10;
+      const num = 20;
+      const deletedCount = 5;
 
       for (let index = 0; index < num; index++) {
         if (index < deletedCount) {
@@ -57,13 +58,13 @@ describe('MarketplaceCategoryService', () => {
             isDeleted: true,
           });
         } else {
-          categories.push({ ...generateCategory() });
+          categories.push(generateCategory());
         }
       }
       await categoryModel.insertMany(categories);
 
-      const catResponse = await service.findAll();
-      expect(catResponse.length).toBe(num - deletedCount);
+      const catResponse = await service.findAll({ limit });
+      expect(catResponse.length).toBe(limit);
     });
   });
 

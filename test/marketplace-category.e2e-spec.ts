@@ -39,8 +39,8 @@ describe('Marketplace Category resolvers (e2e)', () => {
     });
 
     const getMarketplaceCategories = `
-    query GetMarketplaceCategories {
-      getMarketplaceCategories {
+    query GetMarketplaceCategories($getMarketPlaceCategoriesInput: GetAllInput!) {
+      getMarketplaceCategories(getMarketPlaceCategoriesInput: $getMarketPlaceCategoriesInput) {
         _id
         createdAt
         name
@@ -51,7 +51,8 @@ describe('Marketplace Category resolvers (e2e)', () => {
 
     it('Should get 10 categories successfully', async () => {
       const categories = [];
-      const num = 15;
+      const limit = 10;
+      const num = 20;
       const isDeletedCount = 5;
       for (let index = 0; index < num; index++) {
         if (index < isDeletedCount) {
@@ -69,12 +70,19 @@ describe('Marketplace Category resolvers (e2e)', () => {
       const { body } = await request(app.getHttpServer())
         .post('/graphql')
         .set('Content-Type', 'application/json')
-        .send({ query: getMarketplaceCategories });
+        .send({
+          query: getMarketplaceCategories,
+          variables: {
+            getMarketPlaceCategoriesInput: {
+              limit,
+            },
+          },
+        });
 
       const { getMarketplaceCategories: categoriesData } = body.data;
 
       expect(body.errors).toBeUndefined();
-      expect(categoriesData.length).toBe(num - isDeletedCount);
+      expect(categoriesData.length).toBeLessThanOrEqual(limit);
     });
   });
 

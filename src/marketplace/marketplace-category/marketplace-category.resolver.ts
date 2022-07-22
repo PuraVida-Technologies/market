@@ -2,6 +2,7 @@ import { Resolver, Query, Args } from '@nestjs/graphql';
 import { MarketplaceCategoryService } from './marketplace-category.service';
 import { MarketplaceCategory } from './entities/marketplace-category.entity';
 import { AutoCompleteCategoryInput } from './dto/auto-complete.input';
+import { GetAllDto } from '../../common/inputs/get-all.input';
 
 @Resolver(() => MarketplaceCategory)
 export class MarketplaceCategoryResolver {
@@ -22,8 +23,13 @@ export class MarketplaceCategoryResolver {
   }
 
   @Query(() => [MarketplaceCategory], { name: 'getMarketplaceCategories' })
-  findAll() {
-    return this.marketplaceCategoryService.findAll();
+  findAll(
+    @Args('getMarketPlaceCategoriesInput')
+    getMarketPlaceCategoriesInput?: GetAllDto,
+  ) {
+    return this.marketplaceCategoryService.findAll(
+      getMarketPlaceCategoriesInput,
+    );
   }
 
   @Query(() => MarketplaceCategory, { name: 'getMarketplaceCategory' })

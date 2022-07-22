@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { GetAllDto } from '../../common/inputs/get-all.input';
 import { CATEGORY_NAMES_INDEX } from '../../common/constants';
 import { mongoTextSearch } from '../../common/helpers';
 import { Category } from '../../models';
@@ -12,8 +13,15 @@ export class MarketplaceCategoryService {
     @InjectModel(Category.name) private readonly categoryModel: Model<Category>,
   ) {}
 
-  findAll() {
-    return this.categoryModel.find({ isDeleted: false }).lean();
+  findAll(getMarketPlaceCategoriesInput: GetAllDto) {
+    const { limit, order, page, sortBy } = getMarketPlaceCategoriesInput;
+
+    return this.categoryModel
+      .find({ isDeleted: false })
+      .sort({ [sortBy]: order })
+      .skip(page * limit - limit)
+      .limit(limit)
+      .lean();
   }
 
   findOne(id: string) {

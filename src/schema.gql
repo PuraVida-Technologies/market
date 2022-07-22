@@ -236,7 +236,7 @@ type Query {
   getAdminPost(id: String!): AdminPost!
   getAdminPosts(getAdminPostsInput: GetAllAdminPostsInput!): [AdminPost!]!
   getMarketPlacePost(id: Int!): MarketplacePost!
-  getMarketplaceCategories: [MarketplaceCategory!]!
+  getMarketplaceCategories(getMarketPlaceCategoriesInput: GetAllInput!): [MarketplaceCategory!]!
   getMarketplaceCategory(id: String!): MarketplaceCategory!
   getMarketplacePosts(getMarketplacePostsInput: GetAllInput!): [MarketplacePost!]
   marketplaceAutoCompleteCategory(autoCompleteCategoryInput: AutoCompleteCategoryInput!): [MarketplaceCategory!]!
