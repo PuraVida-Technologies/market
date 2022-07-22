@@ -10,6 +10,7 @@ import {
   UserRatePost,
   UserRatePostSchema,
 } from '../../models';
+import { MarketplaceCategoryModule } from '../marketplace-category/marketplace-category.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import {
         schema: UserRatePostSchema,
       },
     ]),
+    MarketplaceCategoryModule,
   ],
   providers: [MarketplacePostResolver, MarketplacePostService],
   exports: [MarketplacePostService], //this for deps injection

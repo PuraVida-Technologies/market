@@ -29,7 +29,7 @@ export class MarketplacePostResolver {
   }
 
   @Query(() => MarketplacePost, { name: 'getMarketPlacePost' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  findOne(@Args('id', { type: () => String }) id: string) {
     return this.marketplacePostService.findOne(id);
   }
 

@@ -13,6 +13,7 @@ import { CreateMarketplacePostInput } from './dto/create-marketplace-post.input'
 import { FilterMarketplacePostsInput } from './dto/filter-marketplace-posts.input';
 import { UpdateMarketplacePostInput } from './dto/update-marketplace-post.input';
 import { GetAllDto } from '../../common/inputs/get-all.input';
+import { MarketplaceCategoryService } from '../marketplace-category/marketplace-category.service';
 @Injectable()
 export class MarketplacePostService {
   constructor(
@@ -20,6 +21,7 @@ export class MarketplacePostService {
     @InjectModel(Category.name) private readonly categoryModel: Model<Category>,
     @InjectModel(UserRatePost.name)
     private readonly userRatePostModel: Model<UserRatePost>,
+    private readonly categoryService: MarketplaceCategoryService,
 
     @InjectConnection() private readonly connection: mongoose.Connection,
   ) {}
@@ -56,14 +58,14 @@ export class MarketplacePostService {
       .lean();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} marketplacePost`;
+  findOne(id: string) {
+    return this.postModel.findOne({ isDeleted: false, _id: id }).lean();
   }
 
   async update(updateMarketplacePostInput: UpdateMarketplacePostInput) {
     const { postId, categoryId } = updateMarketplacePostInput;
 
-    const post = await this.getOneById(postId);
+    const post = await this.findOne(postId);
 
     if (!post) {
       throw new NotFoundException('This post not exists');
@@ -72,7 +74,7 @@ export class MarketplacePostService {
     let category: Category;
 
     if (categoryId) {
-      category = await this.getCategoryById(categoryId);
+      category = await this.categoryService.findOne(categoryId);
 
       if (!category) {
         throw new NotFoundException('This category not exists');
@@ -100,14 +102,6 @@ export class MarketplacePostService {
     }
 
     return deletedPost;
-  }
-
-  getOneById(id: string) {
-    return this.postModel.findOne({ isDeleted: false, _id: id }).lean();
-  }
-
-  getCategoryById(id: string) {
-    return this.categoryModel.findOne({ isDeleted: false, _id: id }).lean();
   }
 
   async filterPosts(filterPostsInput: FilterMarketplacePostsInput) {
