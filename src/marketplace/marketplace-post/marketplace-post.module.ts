@@ -9,6 +9,7 @@ import {
   PostSchema,
   UserRatePost,
   UserRatePostSchema,
+  PostRepository,
 } from '../../models';
 
 @Module({
@@ -28,7 +29,7 @@ import {
       },
     ]),
   ],
-  providers: [MarketplacePostResolver, MarketplacePostService],
+  providers: [MarketplacePostResolver, MarketplacePostService, PostRepository],
   exports: [MarketplacePostService], //this for deps injection
 })
 export class MarketplacePostModule {}

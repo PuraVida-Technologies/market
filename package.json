@@ -20,7 +20,8 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "test:e2e:watch": "jest --config ./test/jest-e2e.json --watchAll",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "commit": "git-cz"
   },
   "dependencies": {
     "@nestjs/apollo": "^10.0.16",
@@ -38,6 +39,7 @@
     "class-validator": "^0.13.2",
     "cookie-parser": "^1.4.6",
     "faker": "^5.5.3",
+    "git-cz": "^4.9.0",
     "graphql": "^16.5.0",
     "helmet": "^5.1.0",
     "lodash": "^4.17.21",

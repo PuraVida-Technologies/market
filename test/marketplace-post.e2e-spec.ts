@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 import { Model } from 'mongoose';
 import { getModelToken } from '@nestjs/mongoose';
 import { StatusCodes } from 'error-handler-e2';
+import { ObjectId } from 'bson';
 
 import { setupTestApp } from '../test/resources/app-test.module';
 import { closeInMongodConnection } from './mongo.connection';
@@ -513,6 +514,76 @@ describe('Marketplace Post resolvers (e2e)', () => {
         .post('/graphql')
         .set('Content-Type', 'application/json')
         .send({ query: getMarketplacePosts });
+
+      const { errors } = body;
+
+      expect(errors).toBeDefined();
+      expect(errors[0].message).not.toBeNull();
+    });
+  });
+
+  describe('Get One Post', () => {
+    let category: Category;
+
+    beforeAll(async () => {
+      category = await categoryModel.findOne({});
+    });
+
+    afterEach(async () => {
+      await postModel.deleteMany({});
+    });
+
+    const getMarketplacePost = `
+    query GetMarketPlacePost($getPostMarketplaceId: String!) {
+      getMarketPlacePost(id: $getPostMarketplaceId) {
+        _id
+        address
+        categoryId
+        createdAt
+        description
+        imagesUrls
+        mainImageUrl
+        name
+        openHours
+        price
+        status
+        updatedAt
+        userId
+      }
+    }
+    `;
+
+    it('Should get one post successfully', async () => {
+      const post = await postModel.create({
+        ...generatePost(),
+        category,
+        categoryId: category._id,
+      });
+
+      const { body } = await request(app.getHttpServer())
+        .post('/graphql')
+        .set('Content-Type', 'application/json')
+        .send({
+          query: getMarketplacePost,
+          variables: { getPostMarketplaceId: post._id.toString() },
+        });
+
+      expect(body.errors).toBeUndefined();
+      const { _id } = body.data.getMarketPlacePost;
+
+      expect(_id.toString()).toBe(post._id.toString());
+    });
+
+    it('Should fail to get one post, post not exists', async () => {
+      const { body } = await request(app.getHttpServer())
+        .post('/graphql')
+        .set('Content-Type', 'application/json')
+        .send({
+          query: getMarketplacePost,
+          variables: {
+            getPostMarketplaceId: new ObjectId().toString(),
+          },
+        });
 
       const { errors } = body;
 

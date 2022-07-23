@@ -8,7 +8,7 @@ import mongoose, { Model } from 'mongoose';
 import * as _ from 'lodash';
 
 import { createPostFormat } from '../../common/helpers';
-import { Category, Post, UserRatePost } from '../../models';
+import { Category, Post, PostRepository, UserRatePost } from '../../models';
 import { CreateMarketplacePostInput } from './dto/create-marketplace-post.input';
 import { FilterMarketplacePostsInput } from './dto/filter-marketplace-posts.input';
 import { UpdateMarketplacePostInput } from './dto/update-marketplace-post.input';
@@ -22,6 +22,8 @@ export class MarketplacePostService {
     private readonly userRatePostModel: Model<UserRatePost>,
 
     @InjectConnection() private readonly connection: mongoose.Connection,
+
+    private postRepository: PostRepository,
   ) {}
   async create(createMarketplacePostInput: CreateMarketplacePostInput) {
     const { categoryId } = createMarketplacePostInput;
@@ -56,8 +58,14 @@ export class MarketplacePostService {
       .lean();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} marketplacePost`;
+  async findOne(id: string) {
+    const post = await this.postRepository.getOne(id);
+
+    if (!post) {
+      throw new NotFoundException('This post is not exists');
+    }
+
+    return post;
   }
 
   async update(updateMarketplacePostInput: UpdateMarketplacePostInput) {

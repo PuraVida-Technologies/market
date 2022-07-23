@@ -235,7 +235,7 @@ type Query {
   getAdminCategory(id: String!): AdminCategory!
   getAdminPost(id: String!): AdminPost!
   getAdminPosts(getAdminPostsInput: GetAllAdminPostsInput!): [AdminPost!]!
-  getMarketPlacePost(id: Int!): MarketplacePost!
+  getMarketPlacePost(id: String!): MarketplacePost!
   getMarketplaceCategories(getMarketPlaceCategoriesInput: GetAllInput!): [MarketplaceCategory!]!
   getMarketplaceCategory(id: String!): MarketplaceCategory!
   getMarketplacePosts(getMarketplacePostsInput: GetAllInput!): [MarketplacePost!]

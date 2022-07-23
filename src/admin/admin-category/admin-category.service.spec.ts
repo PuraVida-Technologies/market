@@ -54,7 +54,9 @@ describe('AdminCategoryService', () => {
       const category = generateCategory();
       await categoryModel.create(category);
 
-      await expect(service.create(category)).rejects.toThrowError(ConflictException);
+      await expect(service.create(category)).rejects.toThrowError(
+        ConflictException,
+      );
     });
   });
 
