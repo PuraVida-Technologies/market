@@ -13,6 +13,8 @@ import { CreateMarketplacePostInput } from './dto/create-marketplace-post.input'
 import { FilterMarketplacePostsInput } from './dto/filter-marketplace-posts.input';
 import { UpdateMarketplacePostInput } from './dto/update-marketplace-post.input';
 import { GetAllDto } from '../../common/inputs/get-all.input';
+import { POST_STATUS } from '../../common/constants';
+
 @Injectable()
 export class MarketplacePostService {
   constructor(
@@ -51,7 +53,10 @@ export class MarketplacePostService {
     const { limit, order, page, sortBy } = getMarketplacePostInput;
 
     return this.postModel
-      .find({ isDeleted: false })
+      .find({
+        isDeleted: false,
+        status: POST_STATUS.APPROVED,
+      })
       .sort({ [sortBy]: order })
       .skip(page * limit - limit)
       .limit(limit)

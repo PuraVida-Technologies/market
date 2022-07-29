@@ -12,6 +12,7 @@ import { closeInMongodConnection } from './mongo.connection';
 
 import { Category, Post } from '../src/models';
 import { generateCategory, generatePost } from './resources';
+import { POST_STATUS } from '../src/common/constants';
 
 describe('Marketplace Post resolvers (e2e)', () => {
   let app: INestApplication;
@@ -451,7 +452,12 @@ describe('Marketplace Post resolvers (e2e)', () => {
       const posts = [];
 
       for (let index = 0; index < 15; index++) {
-        posts.push({ ...generatePost(), categoryId: category._id, category });
+        posts.push({
+          ...generatePost(),
+          categoryId: category._id,
+          category,
+          status: POST_STATUS.APPROVED,
+        });
       }
 
       await postModel.insertMany(posts);

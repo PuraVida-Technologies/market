@@ -1,5 +1,6 @@
 import * as faker from 'faker';
 import * as mongoose from 'mongoose';
+import { CreateMarketplacePostInput } from 'src/marketplace/marketplace-post/dto/create-marketplace-post.input';
 import { POST_STATUS } from '../../src/common/constants';
 import { Post } from '../../src/models';
 
@@ -36,4 +37,30 @@ export const generatePost = () => {
   post.openHours = `${faker.date.future()}`;
 
   return post;
+};
+
+export const generatePostInput = (
+  categoryId: string,
+): CreateMarketplacePostInput => {
+  const imagesUrls = [];
+
+  for (let index = 0; index < 5; index++) {
+    imagesUrls.push(faker.image.animals());
+  }
+
+  const name = faker.name.firstName();
+  return {
+    name,
+    description: faker.lorem.paragraph(30),
+    mainImageUrl: faker.image.avatar(),
+    imagesUrls,
+    address: `${faker.address.cityName()}, ${faker.address.direction()}`,
+    userId: new mongoose.Types.ObjectId().toString(),
+    price: faker.datatype.number(),
+    openHours: `${faker.date.future()}`,
+    categoryId,
+    latitude: parseFloat(faker.address.latitude()),
+    longitude: parseFloat(faker.address.longitude()),
+    email: faker.internet.email(name),
+  };
 };
