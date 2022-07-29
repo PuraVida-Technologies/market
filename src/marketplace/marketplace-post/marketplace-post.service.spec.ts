@@ -73,8 +73,14 @@ describe('MarketplacePostService', () => {
       const category = generateCategory();
       await categoryModel.create(category);
 
-      const post = generatePostInput(category._id);
-      await expect(service.create(post)).resolves.toBeDefined();
+      const post = {
+        _id: new ObjectId().toHexString(),
+        ...generatePostInput(category._id),
+      };
+      const response = await service.create(post);
+      await expect(response).toBeDefined();
+      await expect(response._id.toString()).toBe(post._id);
+      await expect(response.name).toBe(post.name);
     });
 
     it('Should fail to create post, category is not exists', async () => {
