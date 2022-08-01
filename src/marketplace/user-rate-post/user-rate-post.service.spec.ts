@@ -28,7 +28,7 @@ describe('UserRatePostService', () => {
   let postModel: Model<Post>;
   let postRateModel: Model<UserRatePost>;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         rootMongooseTestModule(),
@@ -58,7 +58,7 @@ describe('UserRatePostService', () => {
     );
   });
 
-  afterAll(async () => {
+  afterEach(async () => {
     await Promise.all([
       () => categoryModel.deleteMany({}),
       () => postModel.deleteMany({}),
@@ -67,28 +67,16 @@ describe('UserRatePostService', () => {
     await closeInMongodConnection();
   });
 
-  const createPost = async (
-    data: Partial<Post> = {},
-  ): Promise<{ post: Post; category: Category }> => {
-    const category = generateCategory();
-    await categoryModel.create(category);
-
-    const post = {
-      ...generatePost(),
-      categoryId: category._id,
-      ...data,
-    };
-    await postModel.create(post);
-
-    return {
-      category,
-      post,
-    };
-  };
-
   describe('create', () => {
     it('Should add a post rating successfully', async () => {
-      const { category, post } = await createPost();
+      const category = generateCategory();
+      await categoryModel.create(category);
+
+      const post = {
+        ...generatePost(),
+        categoryId: category._id,
+      };
+      await postModel.create(post);
       const postRate = {
         ...generateUserPostRate(),
         postId: post._id,
@@ -109,7 +97,14 @@ describe('UserRatePostService', () => {
 
   describe('remove', () => {
     it('Should remove a post rating successfully', async () => {
-      const { category, post } = await createPost();
+      const category = generateCategory();
+      await categoryModel.create(category);
+
+      const post = {
+        ...generatePost(),
+        categoryId: category._id,
+      };
+      await postModel.create(post);
       const postRate = {
         ...generateUserPostRate(),
         postId: post._id,
